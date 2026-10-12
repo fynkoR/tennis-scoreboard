@@ -1,5 +1,6 @@
 package pet.project;
 
+import pet.project.enums.PlayerPosition;
 import pet.project.enums.Point;
 import pet.project.models.*;
 
@@ -23,7 +24,7 @@ public class Main {
 
         // Проверка Set
 
-        Set set = new Set();
+        /*Set set = new Set();
         for(int i = 0; i < 4*5; i++){
             set.addPointTo(true);
         }
@@ -54,7 +55,7 @@ public class Main {
 
         set.showScore();
 
-        System.out.println(set.getCurrentGame().isFinished());
+        System.out.println(set.getCurrentGame().isFinished());*/
 
         System.out.println(" ");
         System.out.println("Проверка match");
@@ -82,7 +83,7 @@ public class Main {
             match.addPointTo(firstPlayer);
         }
         for(int i = 0; i < 4; i++){
-            match.addPointTo(firstPlayer);
+            match.addPointTo(secondPlayer);
         }
     }
 }

@@ -1,5 +1,6 @@
 package pet.project.models;
 
+import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.MatchIsAlreadyCompletedException;
 import pet.project.exceptions.MatchIsNotCompletedException;
 import pet.project.exceptions.NamePlayerNotInMatchException;
@@ -28,12 +29,12 @@ public class Match {
             throw new MatchIsAlreadyCompletedException();
         }
 
-        boolean isFirstPlayer = isFirstPlayer(nameFirstPlayer);
+        PlayerPosition playerPosition = isFirstPlayer(nameFirstPlayer);
 
-        int counter = isFirstPlayer ? counterFirstPlayer : counterSecondPlayer;
-        int opponentCounter = isFirstPlayer ? counterSecondPlayer : counterFirstPlayer;
+        int counter = (playerPosition == PlayerPosition.FIRST) ? counterFirstPlayer : counterSecondPlayer;
+        int opponentCounter = (playerPosition == PlayerPosition.FIRST) ? counterSecondPlayer : counterFirstPlayer;
 
-        set.addPointTo(isFirstPlayer);
+        set.addPointTo(playerPosition);
         if(set.isSetCompleted()){
             counter++;
             if(counter >= WIN_VALUE){
@@ -44,16 +45,16 @@ public class Match {
             }
         }
 
-        counterFirstPlayer = isFirstPlayer ? counter : opponentCounter;
-        counterSecondPlayer = isFirstPlayer ? opponentCounter : counter;
+        counterFirstPlayer = (playerPosition == PlayerPosition.FIRST) ? counter : opponentCounter;
+        counterSecondPlayer = (playerPosition == PlayerPosition.FIRST) ? opponentCounter : counter;
     }
 
-    public boolean isFirstPlayer(String nameFirstPlayer){
+    public PlayerPosition isFirstPlayer(String nameFirstPlayer){
         if(firstPlayer.name().equals(nameFirstPlayer)){
-            return true;
+            return PlayerPosition.FIRST;
         }
         else if(secondPlayer.name().equals(nameFirstPlayer)){
-            return false;
+            return PlayerPosition.SECOND;
         }
         else{
             throw new NamePlayerNotInMatchException(nameFirstPlayer);

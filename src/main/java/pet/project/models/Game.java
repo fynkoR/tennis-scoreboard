@@ -1,5 +1,6 @@
 package pet.project.models;
 
+import pet.project.enums.PlayerPosition;
 import pet.project.enums.Point;
 import pet.project.exceptions.GameIsAlreadyWinException;
 
@@ -15,12 +16,15 @@ public class Game implements Scorable{
     }
 
     @Override
-    public void addPointTo(boolean isFirstPlayer){
+    public void addPointTo(PlayerPosition playerPosition){
+
         if(firstPlayerWin){
             throw new GameIsAlreadyWinException();
         }
-        Point winnerPoints = isFirstPlayer ? firstPlayerPoint : secondPlayerPoint;
-        Point opponentPoints = isFirstPlayer ? secondPlayerPoint : firstPlayerPoint;
+
+
+        Point winnerPoints = (playerPosition == PlayerPosition.FIRST) ? firstPlayerPoint : secondPlayerPoint;
+        Point opponentPoints = (playerPosition == PlayerPosition.FIRST) ? secondPlayerPoint : firstPlayerPoint;
 
         if(winnerPoints == Point.FORTY && (opponentPoints != Point.FORTY && opponentPoints != Point.ADVANTAGE)){
             firstPlayerWin = true;
@@ -35,8 +39,8 @@ public class Game implements Scorable{
             winnerPoints = winnerPoints.next();
         }
 
-        firstPlayerPoint = isFirstPlayer ? winnerPoints : opponentPoints;
-        secondPlayerPoint = isFirstPlayer ? opponentPoints : winnerPoints;
+        firstPlayerPoint = (playerPosition == PlayerPosition.FIRST) ? winnerPoints : opponentPoints;
+        secondPlayerPoint = (playerPosition == PlayerPosition.FIRST) ? opponentPoints : winnerPoints;
     }
 
     @Override

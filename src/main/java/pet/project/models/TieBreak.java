@@ -1,5 +1,6 @@
 package pet.project.models;
 
+import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.GameIsAlreadyWinException;
 
 public class TieBreak implements Scorable{
@@ -18,13 +19,13 @@ public class TieBreak implements Scorable{
     }
 
     @Override
-    public void addPointTo(boolean isFirstPlayer) {
+    public void addPointTo(PlayerPosition playerPosition) {
         if(winner){
             throw new GameIsAlreadyWinException();
         }
 
-        int counter = isFirstPlayer ? counterFirstPlayer : counterSecondPlayer;
-        int opponentCounter = isFirstPlayer ? counterSecondPlayer : counterFirstPlayer;
+        int counter = (playerPosition == PlayerPosition.FIRST) ? counterFirstPlayer : counterSecondPlayer;
+        int opponentCounter = (playerPosition == PlayerPosition.FIRST) ? counterSecondPlayer : counterFirstPlayer;
 
         counter++;
 
@@ -33,8 +34,8 @@ public class TieBreak implements Scorable{
             winner = true;
         }
 
-        counterFirstPlayer = isFirstPlayer ? counter : opponentCounter;
-        counterSecondPlayer = isFirstPlayer ? opponentCounter : counter;
+        counterFirstPlayer = (playerPosition == PlayerPosition.FIRST) ? counter : opponentCounter;
+        counterSecondPlayer = (playerPosition == PlayerPosition.FIRST) ? opponentCounter : counter;
     }
 
     @Override

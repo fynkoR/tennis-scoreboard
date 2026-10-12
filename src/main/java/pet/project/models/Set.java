@@ -1,5 +1,6 @@
 package pet.project.models;
 
+import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.SetIsAlreadyCompletedException;
 
 public class Set {
@@ -19,23 +20,23 @@ public class Set {
         currentGame = new Game();
     }
 
-    public void addPointTo(boolean isFirstPlayer){
+    public void addPointTo(PlayerPosition playerPosition){
         if(isSetCompleted){
             throw new SetIsAlreadyCompletedException();
         }
 
-        int counter = isFirstPlayer ? counterFirstPlayer : counterSecondPlayer;
-        int opponentCounter = isFirstPlayer ? counterSecondPlayer : counterFirstPlayer;
+        int counter = (playerPosition == PlayerPosition.FIRST) ? counterFirstPlayer : counterSecondPlayer;
+        int opponentCounter = (playerPosition == PlayerPosition.FIRST) ? counterSecondPlayer : counterFirstPlayer;
 
         if(isTieBreak){
-            currentGame.addPointTo(isFirstPlayer);
+            currentGame.addPointTo(playerPosition);
             if(currentGame.isFinished()){
                 counter++;
                 isSetCompleted = true;
             }
         }
         else{
-            currentGame.addPointTo(isFirstPlayer);
+            currentGame.addPointTo(playerPosition);
             if(currentGame.isFinished()){
                 counter++;
                 if(counter >= WIN_VALUE_GAME && (counter - opponentCounter >= DIFFERENCE_VALUE_GAME)){
@@ -50,8 +51,8 @@ public class Set {
                 }
             }
         }
-        counterFirstPlayer = isFirstPlayer ? counter : opponentCounter;
-        counterSecondPlayer = isFirstPlayer ? opponentCounter : counter;
+        counterFirstPlayer = (playerPosition == PlayerPosition.FIRST) ? counter : opponentCounter;
+        counterSecondPlayer = (playerPosition == PlayerPosition.FIRST) ? opponentCounter : counter;
     }
 
     public boolean isSetCompleted() {
