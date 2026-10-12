@@ -57,7 +57,7 @@ public class Main {
 
         System.out.println(set.getCurrentGame().isFinished());*/
 
-        System.out.println(" ");
+        /*System.out.println(" ");
         System.out.println("Проверка match");
 
         Match match = new Match(new TennisPlayer("firstPlayer"), new TennisPlayer("secondPlayer"));
@@ -68,7 +68,7 @@ public class Main {
         doSet(match, firstPlayer, secondPlayer);
         System.out.println(match.getCounterFirstPlayer());
         System.out.println(" ");
-        System.out.println(match.getWinner());
+        System.out.println(match.getWinner());*/
 
     }
 

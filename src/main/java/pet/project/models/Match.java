@@ -73,8 +73,24 @@ public class Match {
         }
     }
 
+    public TennisPlayer getSecondPlayer() {
+        return secondPlayer;
+    }
+
+    public TennisPlayer getFirstPlayer() {
+        return firstPlayer;
+    }
+
     public int getCounterFirstPlayer() {
         return counterFirstPlayer;
+    }
+
+    public int getCounterSecondPlayer() {
+        return counterSecondPlayer;
+    }
+
+    public boolean isMatchCompleted() {
+        return isMatchCompleted;
     }
 
     public Set getSet() {
