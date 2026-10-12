@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import pet.project.enums.PlayerPosition;
 import pet.project.enums.Point;
 import pet.project.exceptions.GameIsAlreadyWinException;
-import pet.project.exceptions.NextPointAfterAdvantageException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,14 +13,13 @@ public class GameTest {
     private Game game;
 
     @BeforeEach
-    void prepare(){
+    void init(){
         game = new Game();
     }
 
     @Test
     public void booleanIsFinishedIfGameJustCreated(){
-        var bool = game.isFinished();
-        assertFalse(bool);
+        assertFalse(game.isFinished());
     }
 
     @Test
@@ -49,21 +47,13 @@ public class GameTest {
         game.addPointTo(PlayerPosition.FIRST);
         game.addPointTo(PlayerPosition.FIRST);
         game.addPointTo(PlayerPosition.FIRST);
+
+        game.addPointTo(PlayerPosition.SECOND);
+        game.addPointTo(PlayerPosition.SECOND);
+        game.addPointTo(PlayerPosition.SECOND);
+
         game.addPointTo(PlayerPosition.FIRST);
-        assertEquals(Point.FORTY, game.getFirstPlayerPoint());
-    }
-
-    // тут остановился
-
-    @Test
-    public void shouldBeAfterAdvantageComeException(){
-        assertThrows(NextPointAfterAdvantageException.class, () -> {
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.FIRST);
-        });
+        assertEquals(Point.ADVANTAGE, game.getFirstPlayerPoint());
     }
 
     @Test
@@ -84,7 +74,8 @@ public class GameTest {
         }
         game.addPointTo(PlayerPosition.FIRST);
         game.addPointTo(PlayerPosition.SECOND);
-        assertEquals(game.getFirstPlayerPoint(), game.getSecondPlayerPoint());
+        assertEquals(Point.FORTY, game.getFirstPlayerPoint());
+        assertEquals(Point.FORTY, game.getSecondPlayerPoint());
     }
 
     @Test
@@ -134,10 +125,10 @@ public class GameTest {
 
     @Test
     public void givePointInFinishedGame(){
+        for(int i = 0; i < 4; i++){
+            game.addPointTo(PlayerPosition.FIRST);
+        }
         assertThrows(GameIsAlreadyWinException.class, () -> {
-            for(int i = 0; i < 4; i++){
-                game.addPointTo(PlayerPosition.FIRST);
-            }
             game.addPointTo(PlayerPosition.FIRST);
         });
     }

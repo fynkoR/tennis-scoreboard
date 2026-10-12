@@ -10,17 +10,12 @@ public enum Point {
     ADVANTAGE;
 
     public Point next(){
-        switch (this){
-            case LOVE:
-                return FIFTEEN;
-            case FIFTEEN:
-                return THIRTY;
-            case THIRTY:
-                return FORTY;
-            case FORTY:
-                return ADVANTAGE;
-            default:
-                throw new NextPointAfterAdvantageException(this);
-        }
+        return switch (this) {
+            case LOVE -> FIFTEEN;
+            case FIFTEEN -> THIRTY;
+            case THIRTY -> FORTY;
+            case FORTY -> ADVANTAGE;
+            default -> throw new NextPointAfterAdvantageException(this);
+        };
     }
 }

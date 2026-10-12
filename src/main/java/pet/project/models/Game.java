@@ -22,7 +22,6 @@ public class Game implements Scorable{
             throw new GameIsAlreadyWinException();
         }
 
-
         Point winnerPoints = (playerPosition == PlayerPosition.FIRST) ? firstPlayerPoint : secondPlayerPoint;
         Point opponentPoints = (playerPosition == PlayerPosition.FIRST) ? secondPlayerPoint : firstPlayerPoint;
 
@@ -45,7 +44,7 @@ public class Game implements Scorable{
 
     @Override
     public boolean isFinished() {
-        return firstPlayerWin;
+        return this.firstPlayerWin;
     }
 
     public void showScore(){
@@ -66,10 +65,10 @@ public class Game implements Scorable{
     }
 
     public Point getFirstPlayerPoint() {
-        return firstPlayerPoint;
+        return this.firstPlayerPoint;
     }
 
     public Point getSecondPlayerPoint() {
-        return secondPlayerPoint;
+        return this.secondPlayerPoint;
     }
 }

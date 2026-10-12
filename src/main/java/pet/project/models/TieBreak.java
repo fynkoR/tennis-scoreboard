@@ -29,7 +29,6 @@ public class TieBreak implements Scorable{
 
         counter++;
 
-
         if(counter >= WIN_VALUE && (counter - opponentCounter) >= DIFFERENCE_VALUE){
             winner = true;
         }
