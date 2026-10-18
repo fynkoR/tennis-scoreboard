@@ -7,6 +7,17 @@
   <version>1.0-SNAPSHOT</version>
   <name>tennis-scoreboard Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+    <properties>
+        <spring.version>7.1.0-M2</spring.version>
+        <postgresql.version>42.7.14</postgresql.version>
+        <jakarta.version>6.2.0-M2</jakarta.version>
+        <hibernate_validator.version>9.1.5.Final</hibernate_validator.version>
+        <jakarta_validation.version>4.0.0-M1</jakarta_validation.version>
+        <hibernate_core.version>7.4.13.Final</hibernate_core.version>
+        <hikari.version>7.1.0</hikari.version>
+    </properties>
+
   <dependencies>
       <!-- Source: https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
       <dependency>
@@ -14,6 +25,69 @@
           <artifactId>junit-jupiter-api</artifactId>
           <version>6.1.3</version>
           <scope>test</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
+          <version>${spring.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+      <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>${postgresql.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/jakarta.servlet/jakarta.servlet-api -->
+      <dependency>
+          <groupId>jakarta.servlet</groupId>
+          <artifactId>jakarta.servlet-api</artifactId>
+          <version>${jakarta.version}</version>
+          <scope>provided</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+      <dependency>
+          <groupId>org.hibernate.validator</groupId>
+          <artifactId>hibernate-validator</artifactId>
+          <version>${hibernate_validator.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/jakarta.validation/jakarta.validation-api -->
+      <dependency>
+          <groupId>jakarta.validation</groupId>
+          <artifactId>jakarta.validation-api</artifactId>
+          <version>${jakarta_validation.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jdbc</artifactId>
+          <version>${spring.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/org.springframework/spring-orm -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-orm</artifactId>
+          <version>${spring.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core -->
+      <dependency>
+          <groupId>org.hibernate.orm</groupId>
+          <artifactId>hibernate-core</artifactId>
+          <version>${hibernate_core.version}</version>
+          <scope>compile</scope>
+      </dependency>
+      <!-- Source: https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+      <dependency>
+          <groupId>com.zaxxer</groupId>
+          <artifactId>HikariCP</artifactId>
+          <version>${hikari.version}</version>
+          <scope>compile</scope>
       </dependency>
   </dependencies>
   <build>
