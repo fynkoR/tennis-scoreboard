@@ -1,16 +1,33 @@
 package pet.project.entities;
 
-public class Matches {
-    private int id;
-    private Player player1;
-    private Player player2;
-    private Player Winner;
+import jakarta.persistence.*;
 
-    public Matches(int id, Player player2, Player player1, Player winner) {
-        this.id = id;
-        this.player2 = player2;
+@Entity
+@Table(name = "Matches")
+public class Matches{
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "player1_id")
+    private Player player1;
+
+    @ManyToOne
+    @JoinColumn(name = "player2_id")
+    private Player player2;
+
+    @ManyToOne
+    @JoinColumn(name = "winner_id")
+    private Player winner;
+
+    public Matches(){}
+
+    public Matches(Player player1, Player player2, Player winner){
         this.player1 = player1;
-        Winner = winner;
+        this.player2 = player2;
+        this.winner = winner;
     }
 
     public int getId() {
@@ -38,10 +55,10 @@ public class Matches {
     }
 
     public Player getWinner() {
-        return Winner;
+        return winner;
     }
 
     public void setWinner(Player winner) {
-        Winner = winner;
+        this.winner = winner;
     }
 }

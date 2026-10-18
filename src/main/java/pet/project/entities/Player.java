@@ -1,19 +1,30 @@
 package pet.project.entities;
 
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Player")
 public class Player{
-    private long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "name")
     private String name;
 
-    public Player(long id, String name) {
-        this.id = id;
+    public Player() {}
+
+    public Player(String name){
         this.name = name;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
