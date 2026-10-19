@@ -2,10 +2,15 @@ package pet.project.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import pet.project.dto.AddPointRequest;
+import pet.project.dto.AddPointResponse;
 import pet.project.dto.CreateMatchRequest;
+import pet.project.dto.PlayerDto;
 import pet.project.entities.Player;
 import pet.project.exceptions.SameNamePlayersException;
+import pet.project.models.Game;
 import pet.project.models.Match;
+import pet.project.models.Scorable;
 import pet.project.models.TennisPlayer;
 import pet.project.storage.MatchStorage;
 
@@ -43,5 +48,14 @@ public class MatchService {
         return uuid;
     }
 
-    public
+    public AddPointResponse addPoint(UUID uuid, AddPointRequest addPointRequest){
+        Match currentMatch = matchStorage.findMatchByUUID(uuid);
+        currentMatch.addPointTo(addPointRequest.getName());
+
+        PlayerDto firstPlayerDto = playerService.playerToPlayerDto(currentMatch.getFirstPlayer().name(), currentMatch);
+
+        PlayerDto secondPlayerDto = playerService.playerToPlayerDto(currentMatch.getSecondPlayer().name(), currentMatch);
+
+        return new AddPointResponse(firstPlayerDto, secondPlayerDto, null);
+    }
 }

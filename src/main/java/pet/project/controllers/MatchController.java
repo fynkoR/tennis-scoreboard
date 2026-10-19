@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pet.project.dto.AddPointRequest;
+import pet.project.dto.AddPointResponse;
 import pet.project.dto.CreateMatchRequest;
 import pet.project.dto.CreateMatchResponse;
 import pet.project.services.MatchService;
@@ -36,7 +37,8 @@ public class MatchController {
     }
 
     @PostMapping("/{uuid}/point")
-    public ResponseEntity<String> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable String uuid){
+    public ResponseEntity<AddPointResponse> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable String uuid){
 
+        return null;
     }
 }

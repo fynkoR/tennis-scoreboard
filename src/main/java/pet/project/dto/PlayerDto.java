@@ -3,6 +3,7 @@ package pet.project.dto;
 import pet.project.enums.Point;
 
 public class PlayerDto {
+
     private String name;
     private Point points;
     private int games;

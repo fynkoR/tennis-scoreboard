@@ -3,7 +3,14 @@ package pet.project.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pet.project.dao.PlayerDao;
+import pet.project.dto.PlayerDto;
 import pet.project.entities.Player;
+import pet.project.enums.PlayerPosition;
+import pet.project.enums.Point;
+import pet.project.models.Game;
+import pet.project.models.Match;
+import pet.project.models.Scorable;
+import pet.project.models.TieBreak;
 
 import java.util.Optional;
 
@@ -26,5 +33,36 @@ public class PlayerService {
             playerDao.save(playerNew);
             return playerNew;
         }
+    }
+
+    public PlayerDto playerToPlayerDto(String name, Match match){
+        PlayerDto player = new PlayerDto();
+
+        player.setName(name);
+
+        Scorable scorable = match.getSet().getCurrentGame();
+
+        PlayerPosition playerPosition = match.isFirstPlayer(name);
+
+        boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;
+
+        if(scorable instanceof Game game){
+            Point points = isFirstPlayer ? game.getFirstPlayerPoint() : game.getSecondPlayerPoint();
+
+            player.setPoints(points);
+        }
+        else {
+            TieBreak tieBreak = (TieBreak) scorable;
+
+            int points = isFirstPlayer ? tieBreak.getCounterFirstPlayer() : tieBreak.getCounterSecondPlayer();
+
+            player.setTieBreakPoints(points);
+        }
+
+        player.setGames(isFirstPlayer ? match.getSet().getCounterFirstPlayer() : match.getCounterSecondPlayer());
+
+        player.setSets(isFirstPlayer ? match.getCounterFirstPlayer() : match.getCounterSecondPlayer());
+
+        return player;
     }
 }
