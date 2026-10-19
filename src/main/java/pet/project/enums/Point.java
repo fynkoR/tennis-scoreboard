@@ -3,11 +3,21 @@ package pet.project.enums;
 import pet.project.exceptions.NextPointAfterAdvantageException;
 
 public enum Point {
-    LOVE,
-    FIFTEEN,
-    THIRTY,
-    FORTY,
-    ADVANTAGE;
+    LOVE ("0"),
+    FIFTEEN ("15"),
+    THIRTY ("30"),
+    FORTY ("40"),
+    ADVANTAGE ("AD");
+
+    private String title;
+
+    Point(String title){
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
 
     public Point next(){
         return switch (this) {
@@ -18,4 +28,5 @@ public enum Point {
             default -> throw new NextPointAfterAdvantageException(this);
         };
     }
+
 }

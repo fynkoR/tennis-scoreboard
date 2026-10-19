@@ -37,8 +37,9 @@ public class MatchController {
     }
 
     @PostMapping("/{uuid}/point")
-    public ResponseEntity<AddPointResponse> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable String uuid){
-
-        return null;
+    public ResponseEntity<AddPointResponse> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable("uuid") UUID uuid){
+        AddPointResponse addPointResponse = matchService.addPoint(uuid, addPointRequest);
+        return ResponseEntity.ok(addPointResponse);
     }
+
 }

@@ -11,7 +11,6 @@ import pet.project.dto.ErrorResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(SameNamePlayersException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleValidationException(SameNamePlayersException exception){
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
 
@@ -21,12 +20,20 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MatchNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ErrorResponse> handleNotFoundMatchException(MatchNotFoundException exception){
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MatchIsAlreadyCompletedException.class)
+    public ResponseEntity<ErrorResponse> handleMatchIsAlreadyCompletedException(MatchIsAlreadyCompletedException exception){
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(errorResponse);
     }
 }

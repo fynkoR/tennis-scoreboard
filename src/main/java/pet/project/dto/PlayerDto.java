@@ -5,14 +5,14 @@ import pet.project.enums.Point;
 public class PlayerDto {
 
     private String name;
-    private Point points;
+    private String points;
     private int games;
     private int sets;
     private int tieBreakPoints;
 
     public PlayerDto(){}
 
-    public PlayerDto(String name, Point points, int games, int sets, int tieBreakPoints) {
+    public PlayerDto(String name, String points, int games, int sets, int tieBreakPoints) {
         this.name = name;
         this.points = points;
         this.games = games;
@@ -36,11 +36,11 @@ public class PlayerDto {
         this.games = games;
     }
 
-    public Point getPoints() {
+    public String getPoints() {
         return points;
     }
 
-    public void setPoints(Point points) {
+    public void setPoints(String points) {
         this.points = points;
     }
 

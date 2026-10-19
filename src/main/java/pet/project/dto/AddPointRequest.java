@@ -3,6 +3,8 @@ package pet.project.dto;
 public class AddPointRequest {
     private String name;
 
+    public AddPointRequest(){}
+
     public AddPointRequest(String name){
         this.name = name;
     }

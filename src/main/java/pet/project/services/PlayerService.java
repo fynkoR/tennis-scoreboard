@@ -47,7 +47,7 @@ public class PlayerService {
         boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;
 
         if(scorable instanceof Game game){
-            Point points = isFirstPlayer ? game.getFirstPlayerPoint() : game.getSecondPlayerPoint();
+            String points = isFirstPlayer ? game.getFirstPlayerPoint().getTitle() : game.getSecondPlayerPoint().getTitle();
 
             player.setPoints(points);
         }
@@ -59,7 +59,7 @@ public class PlayerService {
             player.setTieBreakPoints(points);
         }
 
-        player.setGames(isFirstPlayer ? match.getSet().getCounterFirstPlayer() : match.getCounterSecondPlayer());
+        player.setGames(isFirstPlayer ? match.getSet().getCounterFirstPlayer() : match.getSet().getCounterSecondPlayer());
 
         player.setSets(isFirstPlayer ? match.getCounterFirstPlayer() : match.getCounterSecondPlayer());
 
