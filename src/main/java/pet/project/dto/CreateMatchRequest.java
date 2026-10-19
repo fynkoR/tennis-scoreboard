@@ -1,10 +1,12 @@
 package pet.project.dto;
 
-public class CreateMatchDTO {
+public class CreateMatchRequest {
     private String firstPlayerName;
     private String secondPlayerName;
 
-    public CreateMatchDTO(String firstPlayerName, String secondPlayerName) {
+    public CreateMatchRequest(){}
+
+    public CreateMatchRequest(String firstPlayerName, String secondPlayerName) {
         this.firstPlayerName = firstPlayerName;
         this.secondPlayerName = secondPlayerName;
     }

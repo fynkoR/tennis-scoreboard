@@ -1,31 +1,42 @@
 package pet.project.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pet.project.dao.PlayerDao;
-import pet.project.dto.CreateMatchDTO;
-import pet.project.entities.Player;
+import pet.project.dto.AddPointRequest;
+import pet.project.dto.CreateMatchRequest;
+import pet.project.dto.CreateMatchResponse;
+import pet.project.services.MatchService;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/matches")
 public class MatchController {
 
-    private final PlayerDao playerDao;
+    private final MatchService matchService;
 
     @Autowired
-    public MatchController(PlayerDao playerDao) {
-        this.playerDao = playerDao;
+    public MatchController(MatchService matchService) {
+        this.matchService = matchService;
     }
 
     @PostMapping
-    public UUID createMatch(@RequestBody CreateMatchDTO createMatchDTO){
+    public ResponseEntity<CreateMatchResponse> createMatch(@RequestBody CreateMatchRequest createMatchRequest){
+        UUID uuid = matchService.createMatch(createMatchRequest);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .header("Location", "/matches/" + uuid)
+                .body(new CreateMatchResponse(uuid));
+    }
 
-        return UUID.randomUUID();
+    @PostMapping("/{uuid}/point")
+    public ResponseEntity<String> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable String uuid){
+
     }
 }

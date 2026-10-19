@@ -2,6 +2,7 @@ package pet.project.configs;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.hibernate.HibernateTransactionManager;
 import org.springframework.orm.jpa.hibernate.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -36,10 +38,10 @@ public class WebConfig implements WebMvcConfigurer {
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
 
-        config.setDriverClassName(environment.getRequiredProperty("hibernate.driver_class"));
-        config.setJdbcUrl(environment.getRequiredProperty("hibernate.connection.url"));
-        config.setUsername(environment.getRequiredProperty("hibernate.connection.username"));
-        config.setPassword(environment.getRequiredProperty("hibernate.connection.password"));
+        config.setDriverClassName(environment.getRequiredProperty("db.driver_class"));
+        config.setJdbcUrl(environment.getRequiredProperty("db.url"));
+        config.setUsername(environment.getRequiredProperty("db.username"));
+        config.setPassword(environment.getRequiredProperty("db.password"));
 
         return new HikariDataSource(config);
     }
