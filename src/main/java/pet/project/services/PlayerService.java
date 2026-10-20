@@ -50,11 +50,13 @@ public class PlayerService {
             String points = isFirstPlayer ? game.getFirstPlayerPoint().getTitle() : game.getSecondPlayerPoint().getTitle();
 
             player.setPoints(points);
+
+
         }
         else {
             TieBreak tieBreak = (TieBreak) scorable;
 
-            int points = isFirstPlayer ? tieBreak.getCounterFirstPlayer() : tieBreak.getCounterSecondPlayer();
+            Integer points = isFirstPlayer ? tieBreak.getCounterFirstPlayer() : tieBreak.getCounterSecondPlayer();
 
             player.setTieBreakPoints(points);
         }

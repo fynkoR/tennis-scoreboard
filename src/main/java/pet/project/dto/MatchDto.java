@@ -1,13 +1,13 @@
 package pet.project.dto;
 
-public class AddPointResponse {
+public class MatchDto {
     private PlayerDto firstPlayer;
     private PlayerDto secondPlayer;
     private String winnerName;
 
-    public AddPointResponse(){}
+    public MatchDto(){}
 
-    public AddPointResponse(PlayerDto firstPlayer, PlayerDto secondPlayer, String winnerName) {
+    public MatchDto(PlayerDto firstPlayer, PlayerDto secondPlayer, String winnerName) {
         this.firstPlayer = firstPlayer;
         this.secondPlayer = secondPlayer;
         this.winnerName = winnerName;

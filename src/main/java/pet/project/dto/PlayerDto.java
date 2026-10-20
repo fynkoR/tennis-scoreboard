@@ -8,11 +8,11 @@ public class PlayerDto {
     private String points;
     private int games;
     private int sets;
-    private int tieBreakPoints;
+    private Integer tieBreakPoints;
 
     public PlayerDto(){}
 
-    public PlayerDto(String name, String points, int games, int sets, int tieBreakPoints) {
+    public PlayerDto(String name, String points, int games, int sets, Integer tieBreakPoints) {
         this.name = name;
         this.points = points;
         this.games = games;
@@ -52,11 +52,11 @@ public class PlayerDto {
         this.sets = sets;
     }
 
-    public int getTieBreakPoints() {
+    public Integer getTieBreakPoints() {
         return tieBreakPoints;
     }
 
-    public void setTieBreakPoints(int tieBreakPoints) {
+    public void setTieBreakPoints(Integer tieBreakPoints) {
         this.tieBreakPoints = tieBreakPoints;
     }
 }

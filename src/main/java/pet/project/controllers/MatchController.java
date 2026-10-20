@@ -4,12 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pet.project.dto.AddPointRequest;
-import pet.project.dto.AddPointResponse;
+import pet.project.dto.MatchDto;
 import pet.project.dto.CreateMatchRequest;
 import pet.project.dto.CreateMatchResponse;
 import pet.project.services.MatchService;
@@ -37,9 +34,15 @@ public class MatchController {
     }
 
     @PostMapping("/{uuid}/point")
-    public ResponseEntity<AddPointResponse> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable("uuid") UUID uuid){
-        AddPointResponse addPointResponse = matchService.addPoint(uuid, addPointRequest);
-        return ResponseEntity.ok(addPointResponse);
+    public ResponseEntity<MatchDto> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable("uuid") UUID uuid){
+        MatchDto matchDto = matchService.addPoint(uuid, addPointRequest);
+        return ResponseEntity.ok(matchDto);
+    }
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<MatchDto> getScore(@PathVariable("uuid") UUID uuid){
+         MatchDto matchDto = matchService.getScore(uuid);
+        return ResponseEntity.ok(matchDto);
     }
 
 }
