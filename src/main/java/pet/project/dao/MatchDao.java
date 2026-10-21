@@ -45,6 +45,26 @@ public class MatchDao {
     }
 
     @Transactional(readOnly = true)
+    public List<Matches> findFinishedMatchesByPlayerName(int page, String playerName){
+        Session session = sessionFactory.getCurrentSession();
+        Query<Matches> query = session.createQuery("SELECT m FROM Matches m WHERE m.player1.name =:playerName " +
+                "OR m.player2.name =:playerName", Matches.class);
+        query.setParameter("playerName", playerName);
+        query.setMaxResults(LIMIT_VALUE);
+        query.setFirstResult(page * LIMIT_VALUE);
+        return query.getResultList();
+    }
+
+    @Transactional(readOnly = true)
+    public Long countByFindFinishedMatchesByPlayerName(String playerName){
+        Session session = sessionFactory.getCurrentSession();
+        Query<Long> query = session.createQuery("SELECT COUNT(m) FROM Matches m WHERE m.player1.name =:playerName " +
+                "OR m.player2.name =:playerName", Long.class);
+        query.setParameter("playerName", playerName);
+        return query.getSingleResult();
+    }
+
+    @Transactional(readOnly = true)
     public Long countByFindFinishedMatches(){
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("SELECT COUNT(m) FROM Matches m", Long.class).getSingleResult();

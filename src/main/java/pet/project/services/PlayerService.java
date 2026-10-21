@@ -27,6 +27,9 @@ public class PlayerService {
     public Player findByName(String name){
         return playerDao.findByName(name).orElseThrow(() -> new PlayerNotFoundByNameException(name));
     }
+    public boolean existsByName(String name){
+        return playerDao.findByName(name).isPresent();
+    }
 
     public Player findOrCreatePlayer(String name){
         Optional<Player> player = playerDao.findByName(name);

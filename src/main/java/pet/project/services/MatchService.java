@@ -6,10 +6,13 @@ import pet.project.dao.MatchDao;
 import pet.project.dto.*;
 import pet.project.entities.Matches;
 import pet.project.entities.Player;
+import pet.project.exceptions.PlayerNotFoundByNameException;
 import pet.project.exceptions.SameNamePlayersException;
+import pet.project.exceptions.ValidationException;
 import pet.project.models.Match;
 import pet.project.models.TennisPlayer;
 import pet.project.storage.MatchStorage;
+import pet.project.utils.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,20 +92,28 @@ public class MatchService {
 
         matchDao.save(matches);
     }
-    public ListFinishedMatchDto getFinishedMatches(Integer page, String player_name){
+    public ListFinishedMatchDto getFinishedMatches(Integer page, String playerName){
         // рассмотреть вариант с page = 0 , player_name = null;
         // дальше рассмотреть варианты с указанными page , player_name
-        // дальше рассмотреть и с тем и с тем
+        // дальше рассмотреть и с тем , и с тем
         // не валидные значения
 
-        page = page == null ? 0 : page;
+        page = Validator.validateIntegerPage(page);
 
-        List<Matches> listMatches = matchDao.findFinishedMatches(page);
+        if(!playerService.existsByName(playerName)){
+            throw new PlayerNotFoundByNameException(playerName);
+        }
 
-        return listMatchesToDto(listMatches, page);
+        List<Matches> listMatches = (playerName == null) ? matchDao.findFinishedMatches(page)
+                : matchDao.findFinishedMatchesByPlayerName(page, playerName);
+
+        Long totalRecords = (playerName == null) ? matchDao.countByFindFinishedMatches()
+                : matchDao.countByFindFinishedMatchesByPlayerName(playerName);
+
+        return listMatchesToDto(listMatches, page, totalRecords);
     }
 
-    public ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page){
+    public ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page, long totalRecords){
         ListFinishedMatchDto listFinishedMatchDto = new ListFinishedMatchDto();
         listFinishedMatchDto.setList(new ArrayList<>());
 
@@ -117,7 +128,6 @@ public class MatchService {
 
         listFinishedMatchDto.setCurrentPage(page);
 
-        Long totalRecords = matchDao.countByFindFinishedMatches();
         long totalPage = (totalRecords + page - 1) / 2;
         listFinishedMatchDto.setTotalPage(totalPage);
 
