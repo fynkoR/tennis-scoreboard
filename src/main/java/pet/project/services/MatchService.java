@@ -3,10 +3,7 @@ package pet.project.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import pet.project.dao.MatchDao;
-import pet.project.dto.AddPointRequest;
-import pet.project.dto.MatchDto;
-import pet.project.dto.CreateMatchRequest;
-import pet.project.dto.PlayerDto;
+import pet.project.dto.*;
 import pet.project.entities.Matches;
 import pet.project.entities.Player;
 import pet.project.exceptions.SameNamePlayersException;
@@ -14,6 +11,8 @@ import pet.project.models.Match;
 import pet.project.models.TennisPlayer;
 import pet.project.storage.MatchStorage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -89,5 +88,39 @@ public class MatchService {
         Matches matches = new Matches(firstPlayer, secondPlayer, winnerPlayer);
 
         matchDao.save(matches);
+    }
+    public ListFinishedMatchDto getFinishedMatches(Integer page, String player_name){
+        // рассмотреть вариант с page = 0 , player_name = null;
+        // дальше рассмотреть варианты с указанными page , player_name
+        // дальше рассмотреть и с тем и с тем
+        // не валидные значения
+
+        page = page == null ? 0 : page;
+
+        List<Matches> listMatches = matchDao.findFinishedMatches(page);
+
+        return listMatchesToDto(listMatches, page);
+    }
+
+    public ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page){
+        ListFinishedMatchDto listFinishedMatchDto = new ListFinishedMatchDto();
+        listFinishedMatchDto.setList(new ArrayList<>());
+
+        for(Matches matches : listMatches){
+            FinishedMatchDto finishedMatchDto = new FinishedMatchDto();
+            finishedMatchDto.setFirstPlayerName(matches.getPlayer1().getName());
+            finishedMatchDto.setSecondPlayerName(matches.getPlayer2().getName());
+            finishedMatchDto.setWinnerName(matches.getWinner().getName());
+
+            listFinishedMatchDto.getList().add(finishedMatchDto);
+        }
+
+        listFinishedMatchDto.setCurrentPage(page);
+
+        Long totalRecords = matchDao.countByFindFinishedMatches();
+        long totalPage = (totalRecords + page - 1) / 2;
+        listFinishedMatchDto.setTotalPage(totalPage);
+
+        return listFinishedMatchDto;
     }
 }

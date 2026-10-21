@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pet.project.dto.AddPointRequest;
-import pet.project.dto.MatchDto;
-import pet.project.dto.CreateMatchRequest;
-import pet.project.dto.CreateMatchResponse;
+import pet.project.dto.*;
 import pet.project.services.MatchService;
 
 import java.util.UUID;
@@ -41,8 +38,15 @@ public class MatchController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<MatchDto> getScore(@PathVariable("uuid") UUID uuid){
-         MatchDto matchDto = matchService.getScore(uuid);
+        MatchDto matchDto = matchService.getScore(uuid);
         return ResponseEntity.ok(matchDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<ListFinishedMatchDto> getFinishedMatches(@RequestParam(name = "page", required = false) Integer page,
+                                                                   @RequestParam(name = "player_name", required = false) String playerName){
+        ListFinishedMatchDto listFinishedMatchDto = matchService.getFinishedMatches(page, playerName);
+        return ResponseEntity.ok(listFinishedMatchDto);
     }
 
 }
