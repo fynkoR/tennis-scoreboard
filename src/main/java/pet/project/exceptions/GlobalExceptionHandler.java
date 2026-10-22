@@ -1,5 +1,7 @@
 package pet.project.exceptions;
 
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -62,11 +64,19 @@ public class GlobalExceptionHandler {
                 .getFieldErrors()
                 .get(0)
                 .getDefaultMessage();
-
         ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(HibernateException.class)
+    public ResponseEntity<ErrorResponse> handleHibernateException(HibernateException exception){
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(errorResponse);
     }
 }

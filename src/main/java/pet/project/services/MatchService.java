@@ -22,6 +22,8 @@ import java.util.UUID;
 @Component
 public class MatchService {
 
+    private static final int LIMIT_VALUE = 2;
+
     private final PlayerService playerService;
     private final MatchStorage matchStorage;
     private final MatchDao matchDao;
@@ -100,8 +102,10 @@ public class MatchService {
             throw new PlayerNotFoundByNameException(playerName);
         }
 
-        List<Matches> listMatches = (playerName == null) ? matchDao.findFinishedMatches(page)
-                : matchDao.findFinishedMatchesByPlayerName(page, playerName);
+        int offset = page * LIMIT_VALUE;
+
+        List<Matches> listMatches = (playerName == null) ? matchDao.findFinishedMatches(LIMIT_VALUE, offset)
+                : matchDao.findFinishedMatchesByPlayerName(LIMIT_VALUE, offset, playerName);
 
         Long totalRecords = (playerName == null) ? matchDao.countByFindFinishedMatches()
                 : matchDao.countByFindFinishedMatchesByPlayerName(playerName);
@@ -123,7 +127,7 @@ public class MatchService {
         }
 
         listFinishedMatchDto.setCurrentPage(page);
-        double totalPagesDouble = (totalRecords * 1.0) / 2;
+        double totalPagesDouble = (totalRecords * 1.0) / LIMIT_VALUE;
         long totalPages = (long) Math.ceil(totalPagesDouble);
 
         listFinishedMatchDto.setTotalPages(totalPages);
