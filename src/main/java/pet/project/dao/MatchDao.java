@@ -32,7 +32,13 @@ public class MatchDao {
     @Transactional(readOnly = true)
     public List<Matches> findFinishedMatches(int page){
         Session session = sessionFactory.getCurrentSession();
-        Query<Matches> query = session.createQuery("SELECT m FROM Matches m", Matches.class);
+        Query<Matches> query = session.createQuery("""
+        SELECT m FROM Matches m
+         JOIN FETCH m.player1
+         JOIN FETCH m.player2
+         JOIN FETCH m.winner
+         ORDER BY m.id
+""", Matches.class);
         query.setMaxResults(LIMIT_VALUE);
         query.setFirstResult(page * LIMIT_VALUE);
         return query.getResultList();
@@ -41,8 +47,15 @@ public class MatchDao {
     @Transactional(readOnly = true)
     public List<Matches> findFinishedMatchesByPlayerName(int page, String playerName){
         Session session = sessionFactory.getCurrentSession();
-        Query<Matches> query = session.createQuery("SELECT m FROM Matches m WHERE m.player1.name =:playerName " +
-                "OR m.player2.name =:playerName", Matches.class);
+        Query<Matches> query = session.createQuery("""
+        SELECT m FROM Matches m
+        JOIN FETCH m.player1
+        JOIN FETCH m.player2
+        JOIN FETCH m.winner
+        WHERE m.player1.name =:playerName
+        OR m.player2.name =:playerName
+        ORDER BY m.id
+""", Matches.class);
         query.setParameter("playerName", playerName);
         query.setMaxResults(LIMIT_VALUE);
         query.setFirstResult(page * LIMIT_VALUE);
