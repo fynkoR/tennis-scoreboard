@@ -1,5 +1,6 @@
 package pet.project.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class MatchController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateMatchResponse> createMatch(@RequestBody CreateMatchRequest createMatchRequest){
+    public ResponseEntity<CreateMatchResponse> createMatch(@Valid @RequestBody CreateMatchRequest createMatchRequest){
         UUID uuid = matchService.createMatch(createMatchRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

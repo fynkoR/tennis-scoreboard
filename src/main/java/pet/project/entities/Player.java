@@ -2,7 +2,9 @@ package pet.project.entities;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
@@ -14,6 +16,8 @@ public class Player{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank(message = "Name should be not empty !")
+    @Size(min = 3, max = 20, message = "Name should be between 3 and 20 characters")
     @Column(name = "name")
     private String name;
 

@@ -1,7 +1,16 @@
 package pet.project.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class CreateMatchRequest {
+
+    @NotBlank(message = "First player name should be not empty")
+    @Size(min = 3, max = 20, message = "First player name should be between 3 and 20 characters")
     private String firstPlayerName;
+
+    @NotBlank(message = "Second player name should be not empty")
+    @Size(min = 3, max = 20, message = "Second player name should be between 3 and 20 characters")
     private String secondPlayerName;
 
     public CreateMatchRequest(){}

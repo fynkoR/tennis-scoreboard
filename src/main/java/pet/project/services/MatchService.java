@@ -93,10 +93,6 @@ public class MatchService {
         matchDao.save(matches);
     }
     public ListFinishedMatchDto getFinishedMatches(Integer page, String playerName){
-        // рассмотреть вариант с page = 0 , player_name = null;
-        // дальше рассмотреть варианты с указанными page , player_name
-        // дальше рассмотреть и с тем , и с тем
-        // не валидные значения
 
         page = Validator.validateIntegerPage(page);
 
