@@ -42,25 +42,11 @@ public class TieBreak implements Scorable{
         return this.winner;
     }
 
-    @Override
-    public void showScore() {
-        System.out.println("Score 1 player: " + counterFirstPlayer);
-        System.out.println("Score 2 player: " + counterSecondPlayer);
-    }
-
     public int getCounterFirstPlayer() {
         return counterFirstPlayer;
     }
 
-    public void setCounterFirstPlayer(int counterFirstPlayer) {
-        this.counterFirstPlayer = counterFirstPlayer;
-    }
-
     public int getCounterSecondPlayer() {
         return counterSecondPlayer;
-    }
-
-    public void setCounterSecondPlayer(int counterSecondPlayer) {
-        this.counterSecondPlayer = counterSecondPlayer;
     }
 }

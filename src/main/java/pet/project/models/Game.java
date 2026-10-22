@@ -47,23 +47,6 @@ public class Game implements Scorable{
         return this.firstPlayerWin;
     }
 
-    public void showScore(){
-        System.out.println("Score 1 player: " + firstPlayerPoint);
-        System.out.println("Score 2 player: " + secondPlayerPoint);
-    }
-
-    public void setFirstPlayerPoint(Point firstPlayerPoint) {
-        this.firstPlayerPoint = firstPlayerPoint;
-    }
-
-    public void setSecondPlayerPoint(Point secondPlayerPoint) {
-        this.secondPlayerPoint = secondPlayerPoint;
-    }
-
-    public void setFirstPlayerWin(boolean firstPlayerWin) {
-        this.firstPlayerWin = firstPlayerWin;
-    }
-
     public Point getFirstPlayerPoint() {
         return this.firstPlayerPoint;
     }
@@ -71,4 +54,5 @@ public class Game implements Scorable{
     public Point getSecondPlayerPoint() {
         return this.secondPlayerPoint;
     }
+
 }

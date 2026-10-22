@@ -75,8 +75,4 @@ public class Set {
         return isTieBreak;
     }
 
-    public void showScore(){
-        System.out.println("Счетчик игр 1 игрока: " + getCounterFirstPlayer());
-        System.out.println("Счетчик игр 2 игрока: " + getCounterSecondPlayer());
-    }
 }
