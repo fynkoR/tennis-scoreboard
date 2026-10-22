@@ -30,12 +30,6 @@ public class MatchDao {
     }
 
     @Transactional(readOnly = true)
-    public List<Matches> findAll(){
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("SELECT m FROM Matches m", Matches.class).getResultList();
-    }
-
-    @Transactional(readOnly = true)
     public List<Matches> findFinishedMatches(int page){
         Session session = sessionFactory.getCurrentSession();
         Query<Matches> query = session.createQuery("SELECT m FROM Matches m", Matches.class);

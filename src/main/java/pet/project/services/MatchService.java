@@ -127,9 +127,10 @@ public class MatchService {
         }
 
         listFinishedMatchDto.setCurrentPage(page);
+        double totalPagesDouble = (totalRecords * 1.0) / 2;
+        long totalPages = (long) Math.ceil(totalPagesDouble);
 
-        long totalPage = (totalRecords + page - 1) / 2;
-        listFinishedMatchDto.setTotalPages(totalPage);
+        listFinishedMatchDto.setTotalPages(totalPages);
 
         return listFinishedMatchDto;
     }

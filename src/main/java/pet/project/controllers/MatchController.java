@@ -43,9 +43,10 @@ public class MatchController {
     }
 
     @GetMapping
-    public ResponseEntity<ListFinishedMatchDto> getFinishedMatches(@RequestParam(name = "page", required = false) Integer page,
+    public ResponseEntity<ListFinishedMatchDto> getFinishedMatches(@RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
                                                                    @RequestParam(name = "player_name", required = false) String playerName){
-        ListFinishedMatchDto listFinishedMatchDto = matchService.getFinishedMatches(page, playerName);
+        ListFinishedMatchDto listFinishedMatchDto = matchService.getFinishedMatches(page - 1, playerName);
+        listFinishedMatchDto.setCurrentPage(page);
         return ResponseEntity.ok(listFinishedMatchDto);
     }
 
