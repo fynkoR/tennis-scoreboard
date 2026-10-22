@@ -3,24 +3,24 @@ package pet.project.dto;
 import java.util.List;
 
 public class ListFinishedMatchDto {
-    private List<FinishedMatchDto> list;
+    private List<FinishedMatchDto> matches;
     private int currentPage;
-    private long totalPage;
+    private long totalPages;
 
     public ListFinishedMatchDto() {}
 
-    public ListFinishedMatchDto(List<FinishedMatchDto> list, int currentPage, long totalPage) {
-        this.list = list;
+    public ListFinishedMatchDto(List<FinishedMatchDto> matches, int currentPage, long totalPages) {
+        this.matches = matches;
         this.currentPage = currentPage;
-        this.totalPage = totalPage;
+        this.totalPages = totalPages;
     }
 
-    public List<FinishedMatchDto> getList() {
-        return list;
+    public List<FinishedMatchDto> getMatches() {
+        return matches;
     }
 
-    public void setList(List<FinishedMatchDto> list) {
-        this.list = list;
+    public void setMatches(List<FinishedMatchDto> matches) {
+        this.matches = matches;
     }
 
     public int getCurrentPage() {
@@ -31,11 +31,11 @@ public class ListFinishedMatchDto {
         this.currentPage = currentPage;
     }
 
-    public long getTotalPage() {
-        return totalPage;
+    public long getTotalPages() {
+        return totalPages;
     }
 
-    public void setTotalPage(long totalPage) {
-        this.totalPage = totalPage;
+    public void setTotalPages(long totalPage) {
+        this.totalPages = totalPage;
     }
 }

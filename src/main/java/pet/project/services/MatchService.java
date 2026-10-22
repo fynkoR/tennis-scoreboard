@@ -100,7 +100,7 @@ public class MatchService {
 
         page = Validator.validateIntegerPage(page);
 
-        if(!playerService.existsByName(playerName)){
+        if(playerName != null && !playerService.existsByName(playerName)){
             throw new PlayerNotFoundByNameException(playerName);
         }
 
@@ -115,7 +115,7 @@ public class MatchService {
 
     public ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page, long totalRecords){
         ListFinishedMatchDto listFinishedMatchDto = new ListFinishedMatchDto();
-        listFinishedMatchDto.setList(new ArrayList<>());
+        listFinishedMatchDto.setMatches(new ArrayList<>());
 
         for(Matches matches : listMatches){
             FinishedMatchDto finishedMatchDto = new FinishedMatchDto();
@@ -123,13 +123,13 @@ public class MatchService {
             finishedMatchDto.setSecondPlayerName(matches.getPlayer2().getName());
             finishedMatchDto.setWinnerName(matches.getWinner().getName());
 
-            listFinishedMatchDto.getList().add(finishedMatchDto);
+            listFinishedMatchDto.getMatches().add(finishedMatchDto);
         }
 
         listFinishedMatchDto.setCurrentPage(page);
 
         long totalPage = (totalRecords + page - 1) / 2;
-        listFinishedMatchDto.setTotalPage(totalPage);
+        listFinishedMatchDto.setTotalPages(totalPage);
 
         return listFinishedMatchDto;
     }
