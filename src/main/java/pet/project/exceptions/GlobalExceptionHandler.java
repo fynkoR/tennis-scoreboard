@@ -1,5 +1,6 @@
 package pet.project.exceptions;
 
+import jakarta.persistence.PersistenceException;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.springframework.http.HttpStatus;
@@ -79,4 +80,14 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(errorResponse);
     }
+
+    @ExceptionHandler(PersistenceException.class)
+    public ResponseEntity<ErrorResponse> handlePersistenceException(PersistenceException exception){
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(errorResponse);
+    }
+
 }

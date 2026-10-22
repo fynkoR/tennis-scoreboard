@@ -26,9 +26,7 @@ public class MatchDao {
              WHERE m.player1.name =:playerName
             OR m.player2.name =:playerName
             """;
-
     private static final String SQL_COUNT_FINISHED_MATCHES = "SELECT COUNT(m) FROM Matches m";
-
     private static final String SQL_SORT = " ORDER BY m.id ASC";
 
     @Autowired
