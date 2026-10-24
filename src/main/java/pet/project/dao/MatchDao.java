@@ -5,10 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import pet.project.dto.MatchDto;
 import pet.project.entities.Matches;
-import pet.project.models.Match;
 
 import java.util.List;
 
@@ -34,13 +31,11 @@ public class MatchDao {
         this.sessionFactory = sessionFactory;
     }
 
-    @Transactional
     public void save(Matches matches){
         Session session = sessionFactory.getCurrentSession();
         session.persist(matches);
     }
 
-    @Transactional(readOnly = true)
     public List<Matches> findFinishedMatches(int limit, int offset){
         Session session = sessionFactory.getCurrentSession();
         Query<Matches> query = session.createQuery(SQL_FIND_FINISHED_MATCHES + SQL_SORT, Matches.class);
@@ -49,7 +44,6 @@ public class MatchDao {
         return query.getResultList();
     }
 
-    @Transactional(readOnly = true)
     public List<Matches> findFinishedMatchesByPlayerName(int limit, int offset, String playerName){
         Session session = sessionFactory.getCurrentSession();
         Query<Matches> query = session.createQuery(SQL_FIND_FINISHED_MATCHES + SQL_FIND_FINISHED_MATCHES_BY_NAME + SQL_SORT, Matches.class);
@@ -59,13 +53,11 @@ public class MatchDao {
         return query.getResultList();
     }
 
-    @Transactional(readOnly = true)
     public Long countByFindFinishedMatches(){
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery(SQL_COUNT_FINISHED_MATCHES, Long.class).getSingleResult();
     }
 
-    @Transactional(readOnly = true)
     public Long countByFindFinishedMatchesByPlayerName(String playerName){
         Session session = sessionFactory.getCurrentSession();
         Query<Long> query = session.createQuery(SQL_COUNT_FINISHED_MATCHES + SQL_FIND_FINISHED_MATCHES_BY_NAME, Long.class);

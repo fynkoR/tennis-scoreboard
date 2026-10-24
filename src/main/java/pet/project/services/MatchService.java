@@ -2,13 +2,13 @@ package pet.project.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pet.project.dao.MatchDao;
 import pet.project.dto.*;
 import pet.project.entities.Matches;
 import pet.project.entities.Player;
 import pet.project.exceptions.PlayerNotFoundByNameException;
 import pet.project.exceptions.SameNamePlayersException;
-import pet.project.exceptions.ValidationException;
 import pet.project.models.Match;
 import pet.project.models.TennisPlayer;
 import pet.project.storage.MatchStorage;
@@ -35,6 +35,7 @@ public class MatchService {
         this.matchStorage = new MatchStorage();
     }
 
+    @Transactional
     public UUID createMatch(CreateMatchRequest createMatchRequest){
         Player firstPlayer = playerService.findOrCreatePlayer(createMatchRequest.getFirstPlayerName());
         Player secondPlayer = playerService.findOrCreatePlayer(createMatchRequest.getSecondPlayerName());
@@ -53,6 +54,7 @@ public class MatchService {
         return uuid;
     }
 
+    @Transactional
     public MatchDto addPoint(UUID uuid, AddPointRequest addPointRequest){
         Match currentMatch = matchStorage.findMatchByUUID(uuid);
         currentMatch.addPointTo(addPointRequest.getName());
@@ -62,26 +64,14 @@ public class MatchService {
         MatchDto matchDto = new MatchDto(firstPlayerDto, secondPlayerDto, null);
 
         if(currentMatch.isMatchCompleted()){
+            System.out.println(getClass().getName());
             saveFinishedMatch(currentMatch, matchDto);
         }
 
         return matchDto;
     }
 
-    public MatchDto getScore(UUID uuid){
-        Match currentMatch = matchStorage.findMatchByUUID(uuid);
-
-        PlayerDto firstPlayerDto = playerService.playerToPlayerDto(currentMatch.getFirstPlayer().name(), currentMatch);
-        PlayerDto secondPlayerDto = playerService.playerToPlayerDto(currentMatch.getSecondPlayer().name(), currentMatch);
-        MatchDto matchDto = new MatchDto(firstPlayerDto, secondPlayerDto, null);
-
-        if(currentMatch.isMatchCompleted()){
-            matchDto.setWinnerName(currentMatch.getWinner().name());
-        }
-
-        return matchDto;
-    }
-
+    @Transactional
     public void saveFinishedMatch(Match currentMatch, MatchDto matchDto){
         String winnerName = currentMatch.getWinner().name();
         matchDto.setWinnerName(winnerName);
@@ -94,6 +84,8 @@ public class MatchService {
 
         matchDao.save(matches);
     }
+
+    @Transactional(readOnly = true)
     public ListFinishedMatchDto getFinishedMatches(Integer page, String playerName){
 
         page = Validator.validateIntegerPage(page);
@@ -133,5 +125,19 @@ public class MatchService {
         listFinishedMatchDto.setTotalPages(totalPages);
 
         return listFinishedMatchDto;
+    }
+
+    public MatchDto getScore(UUID uuid){
+        Match currentMatch = matchStorage.findMatchByUUID(uuid);
+
+        PlayerDto firstPlayerDto = playerService.playerToPlayerDto(currentMatch.getFirstPlayer().name(), currentMatch);
+        PlayerDto secondPlayerDto = playerService.playerToPlayerDto(currentMatch.getSecondPlayer().name(), currentMatch);
+        MatchDto matchDto = new MatchDto(firstPlayerDto, secondPlayerDto, null);
+
+        if(currentMatch.isMatchCompleted()){
+            matchDto.setWinnerName(currentMatch.getWinner().name());
+        }
+
+        return matchDto;
     }
 }
