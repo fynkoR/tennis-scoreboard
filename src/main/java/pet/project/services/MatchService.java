@@ -105,7 +105,7 @@ public class MatchService {
         return listMatchesToDto(listMatches, page, totalRecords);
     }
 
-    public ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page, long totalRecords){
+    private ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page, long totalRecords){
         ListFinishedMatchDto listFinishedMatchDto = new ListFinishedMatchDto();
         listFinishedMatchDto.setMatches(new ArrayList<>());
 
