@@ -99,8 +99,8 @@ public class MatchService {
         List<Matches> listMatches = (playerName == null) ? matchDao.findFinishedMatches(LIMIT_VALUE, offset)
                 : matchDao.findFinishedMatchesByPlayerName(LIMIT_VALUE, offset, playerName);
 
-        Long totalRecords = (playerName == null) ? matchDao.countByFindFinishedMatches()
-                : matchDao.countByFindFinishedMatchesByPlayerName(playerName);
+        Long totalRecords = (playerName == null) ? matchDao.countAll()
+                : matchDao.countAllByPlayerName(playerName);
 
         return listMatchesToDto(listMatches, page, totalRecords);
     }

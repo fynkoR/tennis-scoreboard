@@ -11,14 +11,16 @@ import java.util.Optional;
 @Repository
 public class PlayerDaoImpl implements PlayerDao {
 
-    private final SessionFactory sessionFactory;
     private static final String FIND_BY_NAME = "FROM Player WHERE name =:name";
+
+    private final SessionFactory sessionFactory;
 
     @Autowired
     public PlayerDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public Optional<Player> findByName(String name){
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery(FIND_BY_NAME, Player.class)
@@ -26,6 +28,7 @@ public class PlayerDaoImpl implements PlayerDao {
                 .uniqueResultOptional();
     }
 
+    @Override
     public void save(Player player){
         Session session = sessionFactory.getCurrentSession();
         session.persist(player);
