@@ -2,45 +2,32 @@ package pet.project.entities;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "Player")
+@Table(name = "Players")
 public class Player{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @NotBlank(message = "Name should be not empty !")
-    @Size(min = 3, max = 20, message = "Name should be between 3 and 20 characters")
-    @Column(name = "name")
+    @Column(name = "name", unique = true, nullable = false, length = 20)
     private String name;
 
-    public Player() {}
+    protected Player() {}
 
     public Player(String name){
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override

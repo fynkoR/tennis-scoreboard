@@ -21,8 +21,8 @@ import java.util.Properties;
 
 @Configuration
 @ComponentScan("pet.project")
-@PropertySource("file:/var/lib/tomcat10/conf/hibernate.properties")
-//@PropertySource("classpath:hibernate.properties")
+//@PropertySource("file:/var/lib/tomcat10/conf/hibernate.properties")
+@PropertySource("classpath:hibernate.properties")
 @EnableTransactionManagement
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
