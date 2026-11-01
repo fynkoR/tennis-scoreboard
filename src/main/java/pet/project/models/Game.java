@@ -8,7 +8,7 @@ public class Game implements Scorable{
 
     private Point firstPlayerPoint;
     private Point secondPlayerPoint;
-    private boolean firstPlayerWin;
+    private boolean isFinished;
 
     public Game(){
         this.firstPlayerPoint = Point.LOVE;
@@ -16,20 +16,20 @@ public class Game implements Scorable{
     }
 
     @Override
-    public void addPointTo(PlayerPosition playerPosition){
+    public void addPointTo(PlayerPosition winnerPosition){
 
-        if(firstPlayerWin){
+        if(isFinished){
             throw new GameIsAlreadyWinException();
         }
 
-        Point winnerPoints = (playerPosition == PlayerPosition.FIRST) ? firstPlayerPoint : secondPlayerPoint;
-        Point opponentPoints = (playerPosition == PlayerPosition.FIRST) ? secondPlayerPoint : firstPlayerPoint;
+        Point winnerPoints = (winnerPosition == PlayerPosition.FIRST) ? firstPlayerPoint : secondPlayerPoint;
+        Point opponentPoints = (winnerPosition == PlayerPosition.FIRST) ? secondPlayerPoint : firstPlayerPoint;
 
-        if(winnerPoints == Point.FORTY && (opponentPoints != Point.FORTY && opponentPoints != Point.ADVANTAGE)){
-            firstPlayerWin = true;
+        if(finishGameIfWinnerAtFortyAndOpponentBelowForty(winnerPoints, opponentPoints)){
+            isFinished = true;
         }
         else if(winnerPoints == Point.ADVANTAGE){
-            firstPlayerWin = true;
+            isFinished = true;
         }
         else if (opponentPoints == Point.ADVANTAGE) {
             opponentPoints = Point.FORTY;
@@ -38,21 +38,27 @@ public class Game implements Scorable{
             winnerPoints = winnerPoints.next();
         }
 
-        firstPlayerPoint = (playerPosition == PlayerPosition.FIRST) ? winnerPoints : opponentPoints;
-        secondPlayerPoint = (playerPosition == PlayerPosition.FIRST) ? opponentPoints : winnerPoints;
+        firstPlayerPoint = (winnerPosition == PlayerPosition.FIRST) ? winnerPoints : opponentPoints;
+        secondPlayerPoint = (winnerPosition == PlayerPosition.FIRST) ? opponentPoints : winnerPoints;
+    }
+
+    private boolean finishGameIfWinnerAtFortyAndOpponentBelowForty(Point winnerPoints, Point opponentPoints){
+        return winnerPoints == Point.FORTY
+                && opponentPoints != Point.FORTY
+                && opponentPoints != Point.ADVANTAGE;
     }
 
     @Override
     public boolean isFinished() {
-        return this.firstPlayerWin;
+        return isFinished;
     }
 
     public Point getFirstPlayerPoint() {
-        return this.firstPlayerPoint;
+        return firstPlayerPoint;
     }
 
     public Point getSecondPlayerPoint() {
-        return this.secondPlayerPoint;
+        return secondPlayerPoint;
     }
 
 }
