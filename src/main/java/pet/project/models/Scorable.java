@@ -5,4 +5,5 @@ import pet.project.enums.PlayerPosition;
 public interface Scorable {
     void addPointTo(PlayerPosition playerPosition);
     boolean isFinished();
+    GameScore getGameScore();
 }

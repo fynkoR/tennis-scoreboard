@@ -69,8 +69,11 @@ public class ActiveMatch {
         return match.isMatchCompleted();
     }
 
-    public TennisSet getSet(){
-        return match.getSet();
+    public boolean isTieBreak(){
+        return match.isTieBreak();
     }
 
+    public GameScore getGameScore(){
+        return match.getGameScore();
+    }
 }

@@ -48,12 +48,8 @@ public class TieBreak implements Scorable{
         return isFinished;
     }
 
-    public int getFirstPlayerScore() {
-        return firstPlayerScore;
+    @Override
+    public GameScore getGameScore(){
+        return new GameScore(String.valueOf(firstPlayerScore), String.valueOf(secondPlayerScore));
     }
-
-    public int getSecondPlayerScore() {
-        return secondPlayerScore;
-    }
-
 }

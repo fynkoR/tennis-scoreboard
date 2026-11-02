@@ -48,20 +48,16 @@ public class PlayerService {
         PlayerDto player = new PlayerDto();
         player.setName(name);
 
-        //List<Scorable> listGamesInSet = match.getSet().getGames();
-        Scorable scorable = activeMatch.getSet().getLastGameInList();
-
         PlayerPosition playerPosition = activeMatch.getPlayerPositionInMatch(name);
         boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;
 
-        if(scorable instanceof Game game){
-            String points = isFirstPlayer ? game.getFirstPlayerPoint().getTitle() : game.getSecondPlayerPoint().getTitle();
-            player.setPoints(points);
-        }
-        else {
-            TieBreak tieBreak = (TieBreak) scorable;
-            Integer points = isFirstPlayer ? tieBreak.getFirstPlayerScore() : tieBreak.getSecondPlayerScore();
+        if(activeMatch.isTieBreak()){
+            Integer points = Integer.valueOf(isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer());
             player.setTieBreakPoints(points);
+        }
+        else{
+            String points = isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer();
+            player.setPoints(points);
         }
 
         player.setGames(isFirstPlayer ? activeMatch.getSetScore().scoreFirstPlayer() : activeMatch.getSetScore().scoreSecondPlayer());

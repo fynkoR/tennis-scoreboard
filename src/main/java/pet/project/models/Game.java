@@ -61,4 +61,8 @@ public class Game implements Scorable{
         return secondPlayerPoint;
     }
 
+    @Override
+    public GameScore getGameScore(){
+        return new GameScore(firstPlayerPoint.getTitle(), secondPlayerPoint.getTitle());
+    }
 }
