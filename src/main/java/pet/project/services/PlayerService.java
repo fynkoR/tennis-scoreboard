@@ -62,7 +62,7 @@ public class PlayerService {
         }
         else {
             TieBreak tieBreak = (TieBreak) scorable;
-            Integer points = isFirstPlayer ? tieBreak.getCounterFirstPlayer() : tieBreak.getCounterSecondPlayer();
+            Integer points = isFirstPlayer ? tieBreak.getFirstPlayerScore() : tieBreak.getSecondPlayerScore();
             player.setTieBreakPoints(points);
         }
 

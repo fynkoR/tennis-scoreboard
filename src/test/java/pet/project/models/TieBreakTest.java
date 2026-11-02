@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.GameIsAlreadyWinException;
+import pet.project.exceptions.TieBreakIsAlreadyWinException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,7 +77,7 @@ public class TieBreakTest {
         }
         tieBreak.addPointTo(PlayerPosition.FIRST);
 
-        assertThrows(GameIsAlreadyWinException.class, () -> tieBreak.addPointTo(PlayerPosition.FIRST));
+        assertThrows(TieBreakIsAlreadyWinException.class, () -> tieBreak.addPointTo(PlayerPosition.FIRST));
     }
     @Test
     public void secondPlayerWinAtScore7To0(){

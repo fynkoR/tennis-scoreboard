@@ -2,51 +2,58 @@ package pet.project.models;
 
 import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.GameIsAlreadyWinException;
+import pet.project.exceptions.TieBreakIsAlreadyWinException;
 
 public class TieBreak implements Scorable{
-    private int counterFirstPlayer;
-    private int counterSecondPlayer;
-    private boolean winner;
 
     private static final int INITIAL_VALUE = 0;
     private static final int WIN_VALUE = 7;
     private static final int DIFFERENCE_VALUE = 2;
 
+    private int firstPlayerScore;
+    private int secondPlayerScore;
+    private boolean isFinished;
 
     public TieBreak(){
-        this.counterFirstPlayer = INITIAL_VALUE;
-        this.counterSecondPlayer = INITIAL_VALUE;
+        this.firstPlayerScore = INITIAL_VALUE;
+        this.secondPlayerScore = INITIAL_VALUE;
     }
 
     @Override
     public void addPointTo(PlayerPosition playerPosition) {
-        if(winner){
-            throw new GameIsAlreadyWinException();
+        if(isFinished){
+            throw new TieBreakIsAlreadyWinException();
         }
 
-        int counter = (playerPosition == PlayerPosition.FIRST) ? counterFirstPlayer : counterSecondPlayer;
-        int opponentCounter = (playerPosition == PlayerPosition.FIRST) ? counterSecondPlayer : counterFirstPlayer;
+        int winnerCounter = (playerPosition == PlayerPosition.FIRST) ? firstPlayerScore : secondPlayerScore;
+        int opponentCounter = (playerPosition == PlayerPosition.FIRST) ? secondPlayerScore : firstPlayerScore;
 
-        counter++;
+        winnerCounter++;
 
-        if(counter >= WIN_VALUE && (counter - opponentCounter) >= DIFFERENCE_VALUE){
-            winner = true;
+        if(finishTieBreakIfWinCounterAt7AndOpponentBelow7(winnerCounter, opponentCounter)){
+            isFinished = true;
         }
 
-        counterFirstPlayer = (playerPosition == PlayerPosition.FIRST) ? counter : opponentCounter;
-        counterSecondPlayer = (playerPosition == PlayerPosition.FIRST) ? opponentCounter : counter;
+        firstPlayerScore = (playerPosition == PlayerPosition.FIRST) ? winnerCounter : opponentCounter;
+        secondPlayerScore = (playerPosition == PlayerPosition.FIRST) ? opponentCounter : winnerCounter;
+    }
+
+    private boolean finishTieBreakIfWinCounterAt7AndOpponentBelow7(int winnerCounter, int opponentCounter){
+        return winnerCounter >= WIN_VALUE
+                && (winnerCounter - opponentCounter) >= DIFFERENCE_VALUE;
     }
 
     @Override
     public boolean isFinished() {
-        return this.winner;
+        return isFinished;
     }
 
-    public int getCounterFirstPlayer() {
-        return counterFirstPlayer;
+    public int getFirstPlayerScore() {
+        return firstPlayerScore;
     }
 
-    public int getCounterSecondPlayer() {
-        return counterSecondPlayer;
+    public int getSecondPlayerScore() {
+        return secondPlayerScore;
     }
+
 }
