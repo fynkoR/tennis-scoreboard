@@ -49,8 +49,8 @@ public class PlayerService {
         PlayerDto player = new PlayerDto();
         player.setName(name);
 
-        List<Scorable> listGamesInSet = match.getSet().getGames();
-        Scorable scorable = listGamesInSet.get(listGamesInSet.size() - 1);
+        //List<Scorable> listGamesInSet = match.getSet().getGames();
+        Scorable scorable = match.getSet().getLastGameInList();
 
         PlayerPosition playerPosition = match.isFirstPlayer(name);
         boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;

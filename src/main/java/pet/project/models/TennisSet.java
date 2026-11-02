@@ -13,7 +13,6 @@ public class TennisSet {
 
     private int counterFirstPlayer;
     private int counterSecondPlayer;
-    private boolean isFinished;
     private final List<Scorable> games;
 
     public TennisSet(){
@@ -23,7 +22,7 @@ public class TennisSet {
     }
 
     public void addPointTo(PlayerPosition winnerPosition){
-        if(this.isFinished){
+        if(isFinished()){
             throw new SetIsAlreadyCompletedException();
         }
 
@@ -39,12 +38,10 @@ public class TennisSet {
 
         if(scorable.isFinished()){
             winnerCounter++;
+            updateCounterPlayers(winnerCounter, opponentCounter, winnerPosition);
 
-            if(scorable instanceof TieBreak){
-                this.isFinished = true;
-            }
-            else if(hasWinningScore(winnerCounter, opponentCounter)){
-                this.isFinished = true;
+            if(isFinished()){
+                return;
             }
             else if(hasScoreForTieBreak(winnerCounter, opponentCounter)){
                 games.add(new TieBreak());
@@ -53,13 +50,25 @@ public class TennisSet {
                 games.add(new Game());
             }
         }
+    }
 
-        counterFirstPlayer = (winnerPosition == PlayerPosition.FIRST) ? winnerCounter : opponentCounter;
-        counterSecondPlayer = (winnerPosition == PlayerPosition.FIRST) ? opponentCounter : winnerCounter;
+    public boolean isFinished() {
+        if(getLastGameInList() instanceof TieBreak tieBreak && tieBreak.isFinished()){
+            return true;
+        }
+        else if(hasWinningScore(getCounterFirstPlayer(), getCounterSecondPlayer())){
+            return true;
+        }
+        else return hasWinningScore(getCounterSecondPlayer(), getCounterFirstPlayer());
     }
 
     public Scorable getLastGameInList(){
-        return games.get(games.size() - 1);
+        return games.isEmpty() ? new Game() : games.get(games.size() - 1);
+    }
+
+    private void updateCounterPlayers(int winnerCounter, int opponentCounter, PlayerPosition winnerPosition){
+        counterFirstPlayer = (winnerPosition == PlayerPosition.FIRST) ? winnerCounter : opponentCounter;
+        counterSecondPlayer = (winnerPosition == PlayerPosition.FIRST) ? opponentCounter : winnerCounter;
     }
 
     private boolean hasWinningScore(int winnerCounter, int opponentCounter){
@@ -72,9 +81,6 @@ public class TennisSet {
                 && opponentCounter == MIN_SCORE_TO_WIN;
     }
 
-    public boolean isFinished() {
-        return this.isFinished;
-    }
 
     public int getCounterFirstPlayer() {
         return counterFirstPlayer;

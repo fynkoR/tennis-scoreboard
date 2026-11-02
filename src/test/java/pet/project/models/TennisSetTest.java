@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.SetIsAlreadyCompletedException;
 
+import java.util.logging.Filter;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TennisSetTest {
@@ -154,6 +156,29 @@ public class TennisSetTest {
         }
         assertTrue(tennisSet.isFinished());
     }
+
+    @Test
+    public void scorePlayers7To6AfterTieBreak(){
+        for(int i = 0; i < 4*5; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        for(int i = 0; i < 4*5; i++){
+            tennisSet.addPointTo(PlayerPosition.SECOND);
+        }
+        for(int i = 0; i < 4; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        for(int i = 0; i < 4; i++){
+            tennisSet.addPointTo(PlayerPosition.SECOND);
+        }
+
+        for(int i = 0; i < 7; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        assertEquals(7, tennisSet.getCounterFirstPlayer());
+        assertEquals(6, tennisSet.getCounterSecondPlayer());
+    }
+
     @Test
     public void givePointInFinishedSet(){
         for(int i = 0; i < 4*6; i++){
@@ -162,4 +187,52 @@ public class TennisSetTest {
         assertThrows(SetIsAlreadyCompletedException.class, () -> tennisSet.addPointTo(PlayerPosition.FIRST));
     }
 
+    @Test
+    public void newGameCannotBeCreatedAfterSetFinished(){
+        for(int i = 0; i < 4*5; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        for(int i = 0; i < 4*4; i++){
+            tennisSet.addPointTo(PlayerPosition.SECOND);
+        }
+        for(int i = 0; i < 4; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        assertEquals(10, tennisSet.getGames().size());
+    }
+
+    @Test
+    public void afterTieBreakLastGameIsTieBreak(){
+        for(int i = 0; i < 4*5; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        for(int i = 0; i < 4*5; i++){
+            tennisSet.addPointTo(PlayerPosition.SECOND);
+        }
+        for(int i = 0; i < 4; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        for(int i = 0; i < 4; i++){
+            tennisSet.addPointTo(PlayerPosition.SECOND);
+        }
+
+        for(int i = 0; i < 7; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        assertInstanceOf(TieBreak.class, tennisSet.getLastGameInList());
+    }
+
+    @Test
+    public void addPointAtAScoreOf6To4(){
+        for(int i = 0; i < 4*5; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        for(int i = 0; i < 4*4; i++){
+            tennisSet.addPointTo(PlayerPosition.SECOND);
+        }
+        for(int i = 0; i < 4; i++){
+            tennisSet.addPointTo(PlayerPosition.FIRST);
+        }
+        assertThrows(SetIsAlreadyCompletedException.class, () -> tennisSet.addPointTo(PlayerPosition.FIRST));
+    }
 }
