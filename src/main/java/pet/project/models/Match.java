@@ -11,7 +11,7 @@ public class Match {
     private boolean isMatchCompleted;
     private TennisPlayer firstPlayer;
     private TennisPlayer secondPlayer;
-    private Set set;
+    private TennisSet tennisSet;
 
     private static final int INITIAL_VALUE = 0;
     private static final int WIN_VALUE = 2;
@@ -21,7 +21,7 @@ public class Match {
         this.secondPlayer = secondPlayer;
         this.counterFirstPlayer = INITIAL_VALUE;
         this.counterSecondPlayer = INITIAL_VALUE;
-        set = new Set();
+        tennisSet = new TennisSet();
     }
 
     public void addPointTo(String nameFirstPlayer){
@@ -34,14 +34,14 @@ public class Match {
         int counter = (playerPosition == PlayerPosition.FIRST) ? counterFirstPlayer : counterSecondPlayer;
         int opponentCounter = (playerPosition == PlayerPosition.FIRST) ? counterSecondPlayer : counterFirstPlayer;
 
-        set.addPointTo(playerPosition);
-        if(set.isSetCompleted()){
+        tennisSet.addPointTo(playerPosition);
+        if(tennisSet.isFinished()){
             counter++;
             if(counter >= WIN_VALUE){
                 isMatchCompleted = true;
             }
             else{
-                set = new Set();
+                tennisSet = new TennisSet();
             }
         }
 
@@ -93,7 +93,7 @@ public class Match {
         return isMatchCompleted;
     }
 
-    public Set getSet() {
-        return set;
+    public TennisSet getSet() {
+        return tennisSet;
     }
 }

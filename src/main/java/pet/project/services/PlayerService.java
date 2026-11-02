@@ -8,11 +8,9 @@ import pet.project.dto.PlayerDto;
 import pet.project.entities.Player;
 import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.PlayerNotFoundByNameException;
-import pet.project.models.Game;
-import pet.project.models.Match;
-import pet.project.models.Scorable;
-import pet.project.models.TieBreak;
+import pet.project.models.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -51,7 +49,8 @@ public class PlayerService {
         PlayerDto player = new PlayerDto();
         player.setName(name);
 
-        Scorable scorable = match.getSet().getCurrentGame();
+        List<Scorable> listGamesInSet = match.getSet().getGames();
+        Scorable scorable = listGamesInSet.get(listGamesInSet.size() - 1);
 
         PlayerPosition playerPosition = match.isFirstPlayer(name);
         boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;
