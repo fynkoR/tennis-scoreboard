@@ -7,19 +7,14 @@ import pet.project.exceptions.NamePlayerNotInMatchException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Match {
-    private static final int INITIAL_SCORE = 0;
     public static final int MIN_SCORE_TO_WIN = 2;
-
-    private int counterFirstPlayer;
-    private int counterSecondPlayer;
 
     private final List<TennisSet> listTennisSet;
 
     public Match(){
-        this.counterFirstPlayer = INITIAL_SCORE;
-        this.counterSecondPlayer = INITIAL_SCORE;
         listTennisSet = new ArrayList<>();
     }
 
@@ -27,9 +22,6 @@ public class Match {
         if(isFinished()){
             throw new MatchIsAlreadyCompletedException();
         }
-
-        int winnerCounter = (winnerPosition == PlayerPosition.FIRST) ? counterFirstPlayer : counterSecondPlayer;
-        int opponentCounter = (winnerPosition == PlayerPosition.FIRST) ? counterSecondPlayer : counterFirstPlayer;
 
         if(listTennisSet.isEmpty()){
             listTennisSet.add(new TennisSet());
@@ -40,10 +32,6 @@ public class Match {
         tennisSet.addPointTo(winnerPosition);
 
         if(tennisSet.isFinished()){
-            winnerCounter++;
-            counterFirstPlayer = (winnerPosition == PlayerPosition.FIRST) ? winnerCounter : opponentCounter;
-            counterSecondPlayer = (winnerPosition == PlayerPosition.FIRST) ? opponentCounter : winnerCounter;
-
             if(isFinished()){
                 return;
             }
@@ -54,10 +42,10 @@ public class Match {
     }
 
     public boolean isFinished(){
-        if(counterFirstPlayer >= MIN_SCORE_TO_WIN){
+        if(getCounterFirstPlayer() >= MIN_SCORE_TO_WIN){
             return true;
         }
-        else return counterSecondPlayer >= MIN_SCORE_TO_WIN;
+        else return getCounterSecondPlayer() >= MIN_SCORE_TO_WIN;
     }
 
     private TennisSet getLastTennisSetInList(){
@@ -65,11 +53,20 @@ public class Match {
     }
 
     public int getCounterFirstPlayer() {
-        return counterFirstPlayer;
+        long counterFirstPlayer = listTennisSet.stream()
+                .filter(tennisSet -> tennisSet.getWinner()
+                        .filter(p -> p == PlayerPosition.FIRST).isPresent())
+                .count();
+
+        return (int) counterFirstPlayer;
     }
 
     public int getCounterSecondPlayer() {
-        return counterSecondPlayer;
+        long counterSecondPlayer = listTennisSet.stream()
+                .filter(tennisSet -> tennisSet.getWinner()
+                        .filter(p -> p == PlayerPosition.SECOND).isPresent())
+                .count();
+        return (int) counterSecondPlayer;
     }
 
     public SetScore getSetScore(){

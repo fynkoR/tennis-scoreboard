@@ -5,6 +5,7 @@ import pet.project.exceptions.SetIsAlreadyCompletedException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TennisSet {
     private static final int INITIAL_SCORE = 0;
@@ -103,5 +104,13 @@ public class TennisSet {
 
     public GameScore getGameScore(){
         return getLastGameInList().getGameScore();
+    }
+
+    public Optional<PlayerPosition> getWinner(){
+        if(!isFinished()){
+            return Optional.empty();
+        }
+        if(counterFirstPlayer > counterSecondPlayer) return Optional.of(PlayerPosition.FIRST);
+        else return Optional.of(PlayerPosition.SECOND);
     }
 }
