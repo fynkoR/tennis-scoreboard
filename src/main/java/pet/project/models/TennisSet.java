@@ -107,9 +107,7 @@ public class TennisSet {
     }
 
     public Optional<PlayerPosition> getWinner(){
-        if(!isFinished()){
-            return Optional.empty();
-        }
+        if(!isFinished()) return Optional.empty();
         if(counterFirstPlayer > counterSecondPlayer) return Optional.of(PlayerPosition.FIRST);
         else return Optional.of(PlayerPosition.SECOND);
     }

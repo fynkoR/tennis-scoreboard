@@ -4,6 +4,8 @@ import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.GameIsAlreadyWinException;
 import pet.project.exceptions.TieBreakIsAlreadyWinException;
 
+import java.util.Optional;
+
 public class TieBreak implements Scorable{
 
     private static final int INITIAL_VALUE = 0;
@@ -51,5 +53,12 @@ public class TieBreak implements Scorable{
     @Override
     public GameScore getGameScore(){
         return new GameScore(String.valueOf(firstPlayerScore), String.valueOf(secondPlayerScore));
+    }
+
+    @Override
+    public Optional<PlayerPosition> getWinner() {
+        if(!isFinished) return Optional.empty();
+        else if(firstPlayerScore > secondPlayerScore) return Optional.of(PlayerPosition.FIRST);
+        else return Optional.of(PlayerPosition.SECOND);
     }
 }

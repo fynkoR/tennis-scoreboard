@@ -4,6 +4,8 @@ import pet.project.enums.PlayerPosition;
 import pet.project.enums.Point;
 import pet.project.exceptions.GameIsAlreadyWinException;
 
+import java.util.Optional;
+
 public class Game implements Scorable{
 
     private Point firstPlayerPoint;
@@ -65,4 +67,11 @@ public class Game implements Scorable{
     public GameScore getGameScore(){
         return new GameScore(firstPlayerPoint.getTitle(), secondPlayerPoint.getTitle());
     }
+
+    @Override
+    public Optional<PlayerPosition> getWinner() {
+        return Optional.empty();
+    }
+
+
 }
