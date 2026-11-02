@@ -58,7 +58,7 @@ public class TennisSet {
         counterSecondPlayer = (winnerPosition == PlayerPosition.FIRST) ? opponentCounter : winnerCounter;
     }
 
-    private Scorable getLastGameInList(){
+    public Scorable getLastGameInList(){
         return games.get(games.size() - 1);
     }
 
@@ -86,13 +86,5 @@ public class TennisSet {
 
     public List<Scorable> getGames() {
         return games;
-    }
-
-    public boolean isTieBreak() {
-        Scorable scorable = null;
-        if (!games.isEmpty()) {
-            scorable = getLastGameInList();
-        }
-        return scorable instanceof TieBreak;
     }
 }

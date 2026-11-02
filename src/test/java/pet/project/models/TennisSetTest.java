@@ -104,8 +104,17 @@ public class TennisSetTest {
             tennisSet.addPointTo(PlayerPosition.SECOND);
         }
 
-        assertTrue(tennisSet.isTieBreak());
+        assertTrue(isTieBreak());
     }
+
+    private boolean isTieBreak() {
+        Scorable scorable = null;
+        if (!tennisSet.getGames().isEmpty()) {
+            scorable = tennisSet.getLastGameInList();
+        }
+        return scorable instanceof TieBreak;
+    }
+
     @Test
     public void scoreDoesNotIncreaseWhenTieBreak(){
         for(int i = 0; i < 4*5; i++){
