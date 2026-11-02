@@ -6,8 +6,6 @@ import pet.project.exceptions.MatchIsNotCompletedException;
 import pet.project.exceptions.PlayerNotFoundByNameException;
 
 public class ActiveMatch {
-    private static final int MIN_SCORE_TO_WIN = 2;
-
     private final TennisPlayer firstPlayer;
     private final TennisPlayer secondPlayer;
     private final Match match;
@@ -20,7 +18,7 @@ public class ActiveMatch {
     }
 
     public void addPointTo(String winnerName){
-        if(match.isMatchCompleted()){
+        if(match.isFinished()){
             throw new MatchIsAlreadyCompletedException();
         }
         PlayerPosition winnerPosition = getPlayerPositionInMatch(winnerName);
@@ -40,10 +38,10 @@ public class ActiveMatch {
     }
 
     public TennisPlayer getWinner(){
-        if(match.getCounterFirstPlayer() >= MIN_SCORE_TO_WIN){
+        if(match.getCounterFirstPlayer() >= Match.MIN_SCORE_TO_WIN){
             return firstPlayer;
         }
-        else if(match.getCounterSecondPlayer() >= MIN_SCORE_TO_WIN){
+        else if(match.getCounterSecondPlayer() >= Match.MIN_SCORE_TO_WIN){
             return secondPlayer;
         }
         throw new MatchIsNotCompletedException();
@@ -66,7 +64,7 @@ public class ActiveMatch {
     }
 
     public boolean isMatchCompleted(){
-        return match.isMatchCompleted();
+        return match.isFinished();
     }
 
     public boolean isTieBreak(){
