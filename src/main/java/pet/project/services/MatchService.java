@@ -9,6 +9,7 @@ import pet.project.entities.Matches;
 import pet.project.entities.Player;
 import pet.project.exceptions.PlayerNotFoundByNameException;
 import pet.project.exceptions.SameNamePlayersException;
+import pet.project.models.ActiveMatch;
 import pet.project.models.Match;
 import pet.project.models.TennisPlayer;
 import pet.project.storage.MatchStorage;
@@ -48,15 +49,15 @@ public class MatchService {
         TennisPlayer tennisSecondPlayer = new TennisPlayer(secondPlayer.getName());
 
         UUID uuid = UUID.randomUUID();
-        Match match = new Match(tennisFirstPlayer, tennisSecondPlayer);
-        matchStorage.addMatch(uuid, match);
+        ActiveMatch activeMatch = new ActiveMatch(tennisFirstPlayer, tennisSecondPlayer);
+        matchStorage.addMatch(uuid, activeMatch);
 
         return uuid;
     }
 
     @Transactional
     public MatchDto addPoint(UUID uuid, AddPointRequest addPointRequest){
-        Match currentMatch = matchStorage.findMatchByUUID(uuid);
+        ActiveMatch currentMatch = matchStorage.findMatchByUUID(uuid);
         currentMatch.addPointTo(addPointRequest.getName());
 
         PlayerDto firstPlayerDto = playerService.playerToPlayerDto(currentMatch.getFirstPlayer().name(), currentMatch);
@@ -72,7 +73,7 @@ public class MatchService {
     }
 
     @Transactional
-    public void saveFinishedMatch(Match currentMatch, MatchDto matchDto){
+    public void saveFinishedMatch(ActiveMatch currentMatch, MatchDto matchDto){
         String winnerName = currentMatch.getWinner().name();
         matchDto.setWinnerName(winnerName);
 
@@ -128,7 +129,7 @@ public class MatchService {
     }
 
     public MatchDto getScore(UUID uuid){
-        Match currentMatch = matchStorage.findMatchByUUID(uuid);
+        ActiveMatch currentMatch = matchStorage.findMatchByUUID(uuid);
 
         PlayerDto firstPlayerDto = playerService.playerToPlayerDto(currentMatch.getFirstPlayer().name(), currentMatch);
         PlayerDto secondPlayerDto = playerService.playerToPlayerDto(currentMatch.getSecondPlayer().name(), currentMatch);

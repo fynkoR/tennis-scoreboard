@@ -10,7 +10,6 @@ import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.PlayerNotFoundByNameException;
 import pet.project.models.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -45,14 +44,14 @@ public class PlayerService {
         }
     }
 
-    public PlayerDto playerToPlayerDto(String name, Match match){
+    public PlayerDto playerToPlayerDto(String name, ActiveMatch activeMatch){
         PlayerDto player = new PlayerDto();
         player.setName(name);
 
         //List<Scorable> listGamesInSet = match.getSet().getGames();
-        Scorable scorable = match.getSet().getLastGameInList();
+        Scorable scorable = activeMatch.getSet().getLastGameInList();
 
-        PlayerPosition playerPosition = match.isFirstPlayer(name);
+        PlayerPosition playerPosition = activeMatch.getPlayerPositionInMatch(name);
         boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;
 
         if(scorable instanceof Game game){
@@ -65,8 +64,8 @@ public class PlayerService {
             player.setTieBreakPoints(points);
         }
 
-        player.setGames(isFirstPlayer ? match.getSet().getCounterFirstPlayer() : match.getSet().getCounterSecondPlayer());
-        player.setSets(isFirstPlayer ? match.getCounterFirstPlayer() : match.getCounterSecondPlayer());
+        player.setGames(isFirstPlayer ? activeMatch.getSetScore().scoreFirstPlayer() : activeMatch.getSetScore().scoreSecondPlayer());
+        player.setSets(isFirstPlayer ? activeMatch.getMatchScore().scoreFirstPlayer() : activeMatch.getMatchScore().scoreSecondPlayer());
 
         return player;
     }

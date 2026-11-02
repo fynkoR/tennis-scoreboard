@@ -9,89 +9,90 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class MatchTest {
 
-    private Match match;
+    //private Match match;
     private TennisPlayer firstPlayer;
     private TennisPlayer secondPlayer;
+    private ActiveMatch activeMatch;
 
     @BeforeEach
     public void init(){
         firstPlayer = new TennisPlayer("firstPlayer");
         secondPlayer = new TennisPlayer("secondPlayer");
-        match = new Match(firstPlayer, secondPlayer);
+        activeMatch = new ActiveMatch(firstPlayer, secondPlayer);
     }
 
     @Test
     public void matchCreatedWithTwoPlayers(){
-        assertEquals(match.getFirstPlayer(), firstPlayer);
-        assertEquals(match.getSecondPlayer(), secondPlayer);
+        assertEquals(activeMatch.getFirstPlayer(), firstPlayer);
+        assertEquals(activeMatch.getSecondPlayer(), secondPlayer);
     }
     @Test
     public void counterSetsIsZeroIfMatchJustCreated(){
-        assertEquals(0, match.getCounterFirstPlayer());
-        assertEquals(0, match.getCounterSecondPlayer());
+        assertEquals(0, activeMatch.getMatchScore().scoreFirstPlayer());
+        assertEquals(0, activeMatch.getMatchScore().scoreSecondPlayer());
     }
     @Test
     public void booleanIsFinishedIfMatchJustCreated(){
-        assertFalse(match.isMatchCompleted());
+        assertFalse(activeMatch.isMatchCompleted());
     }
     @Test
     public void getWinnerUntilWin(){
-        assertThrows(MatchIsNotCompletedException.class, () -> match.getWinner());
+        assertThrows(MatchIsNotCompletedException.class, () -> activeMatch.getWinner());
     }
     @Test
     public void oneAddOnePointDoesNotChangeCounterSet(){
-        match.addPointTo(firstPlayer.name());
-        assertEquals(0, match.getCounterFirstPlayer());
+        activeMatch.addPointTo(firstPlayer.name());
+        assertEquals(0, activeMatch.getMatchScore().scoreFirstPlayer());
     }
     @Test
     public void setCompletedCounterIncreased(){
         for(int i = 0; i < 4*6; i++){
-            match.addPointTo(firstPlayer.name());
+            activeMatch.addPointTo(firstPlayer.name());
         }
-        assertEquals(1, match.getCounterFirstPlayer());
+        assertEquals(1, activeMatch.getMatchScore().scoreFirstPlayer());
     }
     @Test
     public void score2To0MatchIsCompleted(){
         for(int i = 0; i < 4*6*2; i++){
-            match.addPointTo(firstPlayer.name());
+            activeMatch.addPointTo(firstPlayer.name());
         }
-        assertTrue(match.isMatchCompleted());
+        assertTrue(activeMatch.isMatchCompleted());
     }
     @Test
     public void score2To1MatchIsCompleted(){
         for(int i = 0; i < 4*6; i++){
-            match.addPointTo(firstPlayer.name());
+            activeMatch.addPointTo(firstPlayer.name());
         }
         for(int i = 0; i < 4*6; i++){
-            match.addPointTo(secondPlayer.name());
+            activeMatch.addPointTo(secondPlayer.name());
         }
         for(int i = 0; i < 4*6; i++){
-            match.addPointTo(firstPlayer.name());
+            activeMatch.addPointTo(firstPlayer.name());
         }
-        assertTrue(match.isMatchCompleted());
+        assertTrue(activeMatch.isMatchCompleted());
     }
     @Test
     public void notShouldMatchIsCompletedWhenScore1To1(){
         for(int i = 0; i < 4*6; i++){
-            match.addPointTo(firstPlayer.name());
+            activeMatch.addPointTo(firstPlayer.name());
         }
         for(int i = 0; i < 4*6; i++){
-            match.addPointTo(secondPlayer.name());
+            activeMatch.addPointTo(secondPlayer.name());
         }
-        assertFalse(match.isMatchCompleted());
+        assertFalse(activeMatch.isMatchCompleted());
     }
     @Test
     public void notShouldMatchIsCompletedWhenScore1To0(){
         for(int i = 0; i < 4*6; i++){
-            match.addPointTo(firstPlayer.name());
+            activeMatch.addPointTo(firstPlayer.name());
         }
-        assertFalse(match.isMatchCompleted());
+        assertFalse(activeMatch.isMatchCompleted());
     }
     @Test
     public void tryAddPointWhenMatchIsCompleted(){
         for(int i = 0; i < 4*6*2; i++){
-            match.addPointTo(firstPlayer.name());
+            activeMatch.addPointTo(firstPlayer.name());
         }
-        assertThrows(MatchIsAlreadyCompletedException.class, () -> match.addPointTo(firstPlayer.name()));
+        assertThrows(MatchIsAlreadyCompletedException.class, () -> activeMatch.addPointTo(firstPlayer.name()));
     }
 }
