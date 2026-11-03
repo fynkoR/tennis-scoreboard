@@ -1,38 +1,44 @@
 package pet.project.storage;
 
+import org.springframework.stereotype.Component;
+import pet.project.exceptions.MatchIsNotCompletedException;
 import pet.project.exceptions.MatchNotFoundException;
 import pet.project.models.ActiveMatch;
-import pet.project.models.Match;
-
-import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+@Component
 public class MatchStorage {
-    private ConcurrentMap<UUID, ActiveMatch> matches;
+    private final ConcurrentMap<UUID, ActiveMatch> matches;
 
     public MatchStorage(){
         matches = new ConcurrentHashMap<>();
     }
 
-    public void addMatch(UUID uuid, ActiveMatch activeMatch){
-        this.matches.put(uuid, activeMatch);
+    public UUID addMatch(ActiveMatch activeMatch){
+        UUID uuid = UUID.randomUUID();
+        matches.put(uuid, activeMatch);
+
+        return uuid;
     }
 
     public ActiveMatch findMatchByUUID(UUID uuid){
-        ActiveMatch match = this.matches.get(uuid);
+        ActiveMatch match = matches.get(uuid);
         if(match == null){
             throw new MatchNotFoundException(uuid);
         }
         return match;
     }
 
-    public ConcurrentMap<UUID, ActiveMatch> getMatches() {
-        return matches;
-    }
+    public void deleteFinishedMatch(ActiveMatch activeMatch){
+        if(activeMatch.isMatchCompleted()){
+            matches.entrySet().removeIf(entry -> entry.getValue().equals(activeMatch));
+        }
+        else{
+            throw new MatchIsNotCompletedException();
+        }
 
-    public void setMatches(ConcurrentHashMap<UUID, ActiveMatch> matches) {
-        this.matches = matches;
+        //если по uuid: matches.remove(uuid);
     }
 }

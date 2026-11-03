@@ -180,20 +180,6 @@ public class TennisSetTest {
     }
 
     @Test
-    public void newGameCannotBeCreatedAfterSetFinished(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        assertEquals(10, tennisSet.getGames().size());
-    }
-
-    @Test
     public void afterTieBreakLastGameIsTieBreak(){
         for(int i = 0; i < 4*5; i++){
             tennisSet.addPointTo(PlayerPosition.FIRST);

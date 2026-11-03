@@ -75,10 +75,6 @@ public class TennisSet {
         return scorable instanceof TieBreak;
     }
 
-    public List<Scorable> getGames() {
-        return games;
-    }
-
     public GameScore getGameScore(){
         return getLastGameInList().getGameScore();
     }
@@ -97,4 +93,6 @@ public class TennisSet {
 
         return (int) score;
     }
+
+
 }

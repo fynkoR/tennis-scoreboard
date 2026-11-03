@@ -33,7 +33,6 @@ public class ActiveMatch {
         else if(playerName.equals(secondPlayer.name())){
             return PlayerPosition.SECOND;
         }
-
         throw new PlayerNotFoundByNameException(playerName);
     }
 

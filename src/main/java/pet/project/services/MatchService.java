@@ -10,7 +10,6 @@ import pet.project.entities.Player;
 import pet.project.exceptions.PlayerNotFoundByNameException;
 import pet.project.exceptions.SameNamePlayersException;
 import pet.project.models.ActiveMatch;
-import pet.project.models.Match;
 import pet.project.models.TennisPlayer;
 import pet.project.storage.MatchStorage;
 import pet.project.utils.Validator;
@@ -30,10 +29,10 @@ public class MatchService {
     private final MatchDao matchDao;
 
     @Autowired
-    public MatchService(PlayerService playerService, MatchDao matchDao) {
+    public MatchService(PlayerService playerService, MatchDao matchDao, MatchStorage matchStorage) {
         this.playerService = playerService;
         this.matchDao = matchDao;
-        this.matchStorage = new MatchStorage();
+        this.matchStorage = matchStorage;
     }
 
     @Transactional
@@ -48,11 +47,9 @@ public class MatchService {
         TennisPlayer tennisFirstPlayer = new TennisPlayer(firstPlayer.getName());
         TennisPlayer tennisSecondPlayer = new TennisPlayer(secondPlayer.getName());
 
-        UUID uuid = UUID.randomUUID();
         ActiveMatch activeMatch = new ActiveMatch(tennisFirstPlayer, tennisSecondPlayer);
-        matchStorage.addMatch(uuid, activeMatch);
 
-        return uuid;
+        return matchStorage.addMatch(activeMatch);
     }
 
     @Transactional
