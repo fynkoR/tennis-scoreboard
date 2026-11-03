@@ -42,10 +42,10 @@ public class Match {
     }
 
     public boolean isFinished(){
-        if(getScorePlayer(PlayerPosition.FIRST) >= MIN_SCORE_TO_WIN){
+        if(this.getScorePlayer(PlayerPosition.FIRST) >= MIN_SCORE_TO_WIN){
             return true;
         }
-        else return getScorePlayer(PlayerPosition.SECOND) >= MIN_SCORE_TO_WIN;
+        else return this.getScorePlayer(PlayerPosition.SECOND) >= MIN_SCORE_TO_WIN;
     }
 
     private TennisSet getLastTennisSetInList(){
@@ -63,7 +63,7 @@ public class Match {
 
     public SetScore getSetScore(){
         TennisSet tennisSet = getLastTennisSetInList();
-        return new SetScore(tennisSet.getCounterFirstPlayer(), tennisSet.getCounterSecondPlayer());
+        return new SetScore(tennisSet.getScorePlayer(PlayerPosition.FIRST), tennisSet.getScorePlayer(PlayerPosition.SECOND));
     }
 
     public boolean isTieBreak(){

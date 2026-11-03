@@ -25,8 +25,8 @@ public class TennisSetTest {
     @Test
     public void onePointDoesNotChangeGamesCount(){
         tennisSet.addPointTo(PlayerPosition.FIRST);
-        assertEquals(0, tennisSet.getCounterFirstPlayer());
-        assertEquals(0, tennisSet.getCounterSecondPlayer());
+        assertEquals(0, tennisSet.getScorePlayer(PlayerPosition.FIRST));
+        assertEquals(0, tennisSet.getScorePlayer(PlayerPosition.SECOND));
     }
 
     @Test
@@ -34,7 +34,7 @@ public class TennisSetTest {
         for(int i = 0; i < 4; i++){
             tennisSet.addPointTo(PlayerPosition.FIRST);
         }
-        assertEquals(1, tennisSet.getCounterFirstPlayer());
+        assertEquals(1, tennisSet.getScorePlayer(PlayerPosition.FIRST));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class TennisSetTest {
         for(int i = 0; i < 4; i++){
             tennisSet.addPointTo(PlayerPosition.SECOND);
         }
-        assertEquals(1, tennisSet.getCounterSecondPlayer());
+        assertEquals(1, tennisSet.getScorePlayer(PlayerPosition.SECOND));
     }
 
     @Test
@@ -124,8 +124,8 @@ public class TennisSetTest {
             tennisSet.addPointTo(PlayerPosition.SECOND);
         }
         tennisSet.addPointTo(PlayerPosition.FIRST);
-        assertEquals(6, tennisSet.getCounterFirstPlayer());
-        assertEquals(6, tennisSet.getCounterSecondPlayer());
+        assertEquals(6, tennisSet.getScorePlayer(PlayerPosition.FIRST));
+        assertEquals(6, tennisSet.getScorePlayer(PlayerPosition.SECOND));
 
     }
     @Test
@@ -167,8 +167,8 @@ public class TennisSetTest {
         for(int i = 0; i < 7; i++){
             tennisSet.addPointTo(PlayerPosition.FIRST);
         }
-        assertEquals(7, tennisSet.getCounterFirstPlayer());
-        assertEquals(6, tennisSet.getCounterSecondPlayer());
+        assertEquals(7, tennisSet.getScorePlayer(PlayerPosition.FIRST));
+        assertEquals(6, tennisSet.getScorePlayer(PlayerPosition.SECOND));
     }
 
     @Test
