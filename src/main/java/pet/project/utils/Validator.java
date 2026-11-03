@@ -1,5 +1,6 @@
 package pet.project.utils;
 
+import pet.project.dto.CreateMatchRequest;
 import pet.project.exceptions.ValidationException;
 
 public class Validator {
@@ -13,5 +14,9 @@ public class Validator {
         else{
             throw new ValidationException("No valid value page !");
         }
+    }
+
+    public static boolean checkIdenticalNames(CreateMatchRequest createMatchRequest){
+        return createMatchRequest.firstPlayerName().equalsIgnoreCase(createMatchRequest.secondPlayerName());
     }
 }

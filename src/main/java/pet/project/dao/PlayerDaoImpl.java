@@ -21,6 +21,11 @@ public class PlayerDaoImpl implements PlayerDao {
     }
 
     @Override
+    public boolean existsByName(String name) {
+        return findByName(name).isPresent();
+    }
+
+    @Override
     public Optional<Player> findByName(String name){
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery(FIND_BY_NAME, Player.class)
@@ -32,10 +37,5 @@ public class PlayerDaoImpl implements PlayerDao {
     public void save(Player player){
         Session session = sessionFactory.getCurrentSession();
         session.persist(player);
-    }
-
-    @Override
-    public boolean existsByName(String name) {
-        return findByName(name).isPresent();
     }
 }

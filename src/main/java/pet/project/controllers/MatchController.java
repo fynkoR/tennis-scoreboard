@@ -14,6 +14,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/matches")
 public class MatchController {
+    private static final int DEFAULT_PAGE_SIZE = 2;
 
     private final MatchService matchService;
 
@@ -46,7 +47,7 @@ public class MatchController {
     @GetMapping
     public ResponseEntity<ListFinishedMatchDto> getFinishedMatches(@RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
                                                                    @RequestParam(name = "player_name", required = false) String playerName){
-        ListFinishedMatchDto listFinishedMatchDto = matchService.getFinishedMatches(page - 1, playerName);
+        ListFinishedMatchDto listFinishedMatchDto = matchService.getFinishedMatches(page - 1, playerName, DEFAULT_PAGE_SIZE);
         listFinishedMatchDto.setCurrentPage(page);
         return ResponseEntity.ok(listFinishedMatchDto);
     }

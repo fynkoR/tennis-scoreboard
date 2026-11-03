@@ -1,7 +1,9 @@
 package pet.project.services;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.dao.MatchDao;
 import pet.project.dto.*;
@@ -9,6 +11,7 @@ import pet.project.entities.Matches;
 import pet.project.entities.Player;
 import pet.project.exceptions.PlayerNotFoundByNameException;
 import pet.project.exceptions.SameNamePlayersException;
+import pet.project.exceptions.ValidationException;
 import pet.project.mappers.PlayerMapper;
 import pet.project.models.ActiveMatch;
 import pet.project.models.TennisPlayer;
@@ -20,11 +23,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@Component
+@Service
 public class MatchService {
-
-    private static final int LIMIT_VALUE = 2;
-
     private final PlayerService playerService;
     private final MatchStorage matchStorage;
     private final MatchDao matchDao;
@@ -40,12 +40,13 @@ public class MatchService {
 
     @Transactional
     public UUID createMatch(CreateMatchRequest createMatchRequest){
-        Player firstPlayer = playerService.findOrCreatePlayer(createMatchRequest.getFirstPlayerName());
-        Player secondPlayer = playerService.findOrCreatePlayer(createMatchRequest.getSecondPlayerName());
-
-        if(firstPlayer.equals(secondPlayer)){
-            throw new SameNamePlayersException(firstPlayer.getName(), secondPlayer.getName());
+        // остановился тут
+        if(Validator.checkIdenticalNames(createMatchRequest)) {
+            throw new SameNamePlayersException(createMatchRequest.firstPlayerName(), createMatchRequest.secondPlayerName());
         }
+
+        Player firstPlayer = playerService.findOrCreatePlayer(createMatchRequest.firstPlayerName());
+        Player secondPlayer = playerService.findOrCreatePlayer(createMatchRequest.secondPlayerName());
 
         TennisPlayer tennisFirstPlayer = new TennisPlayer(firstPlayer.getName());
         TennisPlayer tennisSecondPlayer = new TennisPlayer(secondPlayer.getName());
@@ -87,7 +88,7 @@ public class MatchService {
     }
 
     @Transactional(readOnly = true)
-    public ListFinishedMatchDto getFinishedMatches(Integer page, String playerName){
+    public ListFinishedMatchDto getFinishedMatches(Integer page, String playerName, int pageSize){
 
         page = Validator.validateIntegerPage(page);
 
@@ -95,18 +96,18 @@ public class MatchService {
             throw new PlayerNotFoundByNameException(playerName);
         }
 
-        int offset = page * LIMIT_VALUE;
+        int offset = page * pageSize;
 
-        List<Matches> listMatches = (playerName == null) ? matchDao.findFinishedMatches(LIMIT_VALUE, offset)
-                : matchDao.findFinishedMatchesByPlayerName(LIMIT_VALUE, offset, playerName);
+        List<Matches> listMatches = (playerName == null) ? matchDao.findFinishedMatches(pageSize, offset)
+                : matchDao.findFinishedMatchesByPlayerName(pageSize, offset, playerName);
 
         Long totalRecords = (playerName == null) ? matchDao.countAll()
                 : matchDao.countAllByPlayerName(playerName);
 
-        return listMatchesToDto(listMatches, page, totalRecords);
+        return listMatchesToDto(listMatches, page, totalRecords, pageSize);
     }
 
-    private ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page, long totalRecords){
+    private ListFinishedMatchDto listMatchesToDto(List<Matches> listMatches, int page, long totalRecords, int pageSize){
         ListFinishedMatchDto listFinishedMatchDto = new ListFinishedMatchDto();
         listFinishedMatchDto.setMatches(new ArrayList<>());
 
@@ -120,7 +121,7 @@ public class MatchService {
         }
 
         listFinishedMatchDto.setCurrentPage(page);
-        double totalPagesDouble = (totalRecords * 1.0) / LIMIT_VALUE;
+        double totalPagesDouble = (totalRecords * 1.0) / pageSize;
         long totalPages = (long) Math.ceil(totalPagesDouble);
 
         listFinishedMatchDto.setTotalPages(totalPages);
