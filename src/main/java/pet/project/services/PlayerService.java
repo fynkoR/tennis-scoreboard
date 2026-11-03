@@ -2,6 +2,7 @@ package pet.project.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.dao.PlayerDao;
 import pet.project.dto.PlayerDto;
@@ -12,7 +13,7 @@ import pet.project.models.*;
 
 import java.util.Optional;
 
-@Component
+@Service
 public class PlayerService {
     private final PlayerDao playerDao;
 
@@ -28,7 +29,7 @@ public class PlayerService {
 
     @Transactional(readOnly = true)
     public boolean existsByName(String name){
-        return playerDao.findByName(name).isPresent();
+        return playerDao.existsByName(name);
     }
 
     @Transactional
@@ -42,27 +43,5 @@ public class PlayerService {
             playerDao.save(playerNew);
             return playerNew;
         }
-    }
-
-    public PlayerDto playerToPlayerDto(String name, ActiveMatch activeMatch){
-        PlayerDto player = new PlayerDto();
-        player.setName(name);
-
-        PlayerPosition playerPosition = activeMatch.getPlayerPositionInMatch(name);
-        boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;
-
-        if(activeMatch.isTieBreak()){
-            Integer points = Integer.valueOf(isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer());
-            player.setTieBreakPoints(points);
-        }
-        else{
-            String points = isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer();
-            player.setPoints(points);
-        }
-
-        player.setGames(isFirstPlayer ? activeMatch.getSetScore().scoreFirstPlayer() : activeMatch.getSetScore().scoreSecondPlayer());
-        player.setSets(isFirstPlayer ? activeMatch.getMatchScore().scoreFirstPlayer() : activeMatch.getMatchScore().scoreSecondPlayer());
-
-        return player;
     }
 }

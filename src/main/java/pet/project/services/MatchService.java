@@ -9,6 +9,7 @@ import pet.project.entities.Matches;
 import pet.project.entities.Player;
 import pet.project.exceptions.PlayerNotFoundByNameException;
 import pet.project.exceptions.SameNamePlayersException;
+import pet.project.mappers.PlayerMapper;
 import pet.project.models.ActiveMatch;
 import pet.project.models.TennisPlayer;
 import pet.project.storage.MatchStorage;
@@ -27,12 +28,14 @@ public class MatchService {
     private final PlayerService playerService;
     private final MatchStorage matchStorage;
     private final MatchDao matchDao;
+    private final PlayerMapper playerMapper;
 
     @Autowired
-    public MatchService(PlayerService playerService, MatchDao matchDao, MatchStorage matchStorage) {
+    public MatchService(PlayerService playerService, MatchDao matchDao, MatchStorage matchStorage, PlayerMapper playerMapper) {
         this.playerService = playerService;
         this.matchDao = matchDao;
         this.matchStorage = matchStorage;
+        this.playerMapper = playerMapper;
     }
 
     @Transactional
@@ -57,8 +60,8 @@ public class MatchService {
         ActiveMatch currentMatch = matchStorage.findMatchByUUID(uuid);
         currentMatch.addPointTo(addPointRequest.getName());
 
-        PlayerDto firstPlayerDto = playerService.playerToPlayerDto(currentMatch.getFirstPlayer().name(), currentMatch);
-        PlayerDto secondPlayerDto = playerService.playerToPlayerDto(currentMatch.getSecondPlayer().name(), currentMatch);
+        PlayerDto firstPlayerDto = playerMapper.entityToDto(currentMatch.getFirstPlayer().name(), currentMatch);
+        PlayerDto secondPlayerDto = playerMapper.entityToDto(currentMatch.getSecondPlayer().name(), currentMatch);
         MatchDto matchDto = new MatchDto(firstPlayerDto, secondPlayerDto, null);
 
         if(currentMatch.isMatchCompleted()){
@@ -128,8 +131,8 @@ public class MatchService {
     public MatchDto getScore(UUID uuid){
         ActiveMatch currentMatch = matchStorage.findMatchByUUID(uuid);
 
-        PlayerDto firstPlayerDto = playerService.playerToPlayerDto(currentMatch.getFirstPlayer().name(), currentMatch);
-        PlayerDto secondPlayerDto = playerService.playerToPlayerDto(currentMatch.getSecondPlayer().name(), currentMatch);
+        PlayerDto firstPlayerDto = playerMapper.entityToDto(currentMatch.getFirstPlayer().name(), currentMatch);
+        PlayerDto secondPlayerDto = playerMapper.entityToDto(currentMatch.getSecondPlayer().name(), currentMatch);
         MatchDto matchDto = new MatchDto(firstPlayerDto, secondPlayerDto, null);
 
         if(currentMatch.isMatchCompleted()){

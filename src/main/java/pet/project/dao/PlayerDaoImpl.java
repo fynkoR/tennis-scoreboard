@@ -33,4 +33,9 @@ public class PlayerDaoImpl implements PlayerDao {
         Session session = sessionFactory.getCurrentSession();
         session.persist(player);
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return findByName(name).isPresent();
+    }
 }
