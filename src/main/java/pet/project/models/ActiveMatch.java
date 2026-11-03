@@ -38,10 +38,10 @@ public class ActiveMatch {
     }
 
     public TennisPlayer getWinner(){
-        if(match.getCounterFirstPlayer() >= Match.MIN_SCORE_TO_WIN){
+        if(match.getScorePlayer(PlayerPosition.FIRST) >= Match.MIN_SCORE_TO_WIN){
             return firstPlayer;
         }
-        else if(match.getCounterSecondPlayer() >= Match.MIN_SCORE_TO_WIN){
+        else if(match.getScorePlayer(PlayerPosition.SECOND) >= Match.MIN_SCORE_TO_WIN){
             return secondPlayer;
         }
         throw new MatchIsNotCompletedException();
@@ -56,7 +56,7 @@ public class ActiveMatch {
     }
 
     public MatchScore getMatchScore(){
-        return new MatchScore(match.getCounterFirstPlayer(), match.getCounterSecondPlayer());
+        return new MatchScore(match.getScorePlayer(PlayerPosition.FIRST), match.getScorePlayer(PlayerPosition.SECOND));
     }
 
     public SetScore getSetScore(){

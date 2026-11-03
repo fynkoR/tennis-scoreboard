@@ -42,31 +42,23 @@ public class Match {
     }
 
     public boolean isFinished(){
-        if(getCounterFirstPlayer() >= MIN_SCORE_TO_WIN){
+        if(getScorePlayer(PlayerPosition.FIRST) >= MIN_SCORE_TO_WIN){
             return true;
         }
-        else return getCounterSecondPlayer() >= MIN_SCORE_TO_WIN;
+        else return getScorePlayer(PlayerPosition.SECOND) >= MIN_SCORE_TO_WIN;
     }
 
     private TennisSet getLastTennisSetInList(){
         return listTennisSet.isEmpty() ? new TennisSet() : listTennisSet.get(listTennisSet.size() - 1);
     }
 
-    public int getCounterFirstPlayer() {
-        long counterFirstPlayer = listTennisSet.stream()
+    public int getScorePlayer(PlayerPosition playerPosition){
+        long score = listTennisSet.stream()
                 .filter(tennisSet -> tennisSet.getWinner()
-                        .filter(p -> p == PlayerPosition.FIRST).isPresent())
+                        .filter(p -> p == playerPosition).isPresent())
                 .count();
 
-        return (int) counterFirstPlayer;
-    }
-
-    public int getCounterSecondPlayer() {
-        long counterSecondPlayer = listTennisSet.stream()
-                .filter(tennisSet -> tennisSet.getWinner()
-                        .filter(p -> p == PlayerPosition.SECOND).isPresent())
-                .count();
-        return (int) counterSecondPlayer;
+        return (int) score;
     }
 
     public SetScore getSetScore(){

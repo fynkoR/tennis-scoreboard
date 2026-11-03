@@ -70,8 +70,10 @@ public class Game implements Scorable{
 
     @Override
     public Optional<PlayerPosition> getWinner() {
-        return Optional.empty();
+        if(isFinished && finishGameIfWinnerAtFortyAndOpponentBelowForty(firstPlayerPoint, secondPlayerPoint)) return Optional.of(PlayerPosition.FIRST);
+        else if(isFinished && finishGameIfWinnerAtFortyAndOpponentBelowForty(secondPlayerPoint, firstPlayerPoint)) return Optional.of(PlayerPosition.SECOND);
+        else if(isFinished && firstPlayerPoint == Point.ADVANTAGE) return Optional.of(PlayerPosition.FIRST);
+        else if(isFinished && secondPlayerPoint == Point.ADVANTAGE) return Optional.of(PlayerPosition.SECOND);
+        else return Optional.empty();
     }
-
-
 }
