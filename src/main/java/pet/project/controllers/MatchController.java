@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pet.project.dto.*;
+import pet.project.services.FinishedMatchService;
 import pet.project.services.MatchService;
 
 import java.util.UUID;
@@ -17,10 +18,12 @@ public class MatchController {
     private static final int DEFAULT_PAGE_SIZE = 2;
 
     private final MatchService matchService;
+    private final FinishedMatchService finishedMatchService;
 
     @Autowired
-    public MatchController(MatchService matchService) {
+    public MatchController(MatchService matchService, FinishedMatchService finishedMatchService) {
         this.matchService = matchService;
+        this.finishedMatchService = finishedMatchService;
     }
 
     @PostMapping
@@ -47,7 +50,7 @@ public class MatchController {
     @GetMapping
     public ResponseEntity<ListFinishedMatchDto> getFinishedMatches(@RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
                                                                    @RequestParam(name = "player_name", required = false) String playerName){
-        ListFinishedMatchDto listFinishedMatchDto = matchService.getFinishedMatches(page - 1, playerName, DEFAULT_PAGE_SIZE);
+        ListFinishedMatchDto listFinishedMatchDto = finishedMatchService.getFinishedMatches(page - 1, playerName, DEFAULT_PAGE_SIZE);
         listFinishedMatchDto.setCurrentPage(page);
         return ResponseEntity.ok(listFinishedMatchDto);
     }

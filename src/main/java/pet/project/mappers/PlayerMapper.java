@@ -2,8 +2,10 @@ package pet.project.mappers;
 
 import org.springframework.stereotype.Component;
 import pet.project.dto.PlayerDto;
+import pet.project.entities.Player;
 import pet.project.enums.PlayerPosition;
 import pet.project.models.ActiveMatch;
+import pet.project.models.TennisPlayer;
 
 @Component
 public class PlayerMapper {
@@ -28,5 +30,9 @@ public class PlayerMapper {
         playerDto.setSets(isFirstPlayer ? activeMatch.getMatchScore().scoreFirstPlayer() : activeMatch.getMatchScore().scoreSecondPlayer());
 
         return playerDto;
+    }
+
+    public TennisPlayer playerToTennisPlayer(Player player){
+        return new TennisPlayer(player.getName());
     }
 }
