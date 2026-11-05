@@ -20,112 +20,98 @@ public class GameTest {
         assertFalse(game.isFinished());
     }
 
+    private void addFewPointToPlayer(int count, PlayerPosition playerPosition){
+        for(int i = 0; i < count; i++){
+            game.addPointTo(playerPosition);
+        }
+    }
+
     @Test
     public void shouldBeAfterLoveComeFifteen(){
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(1, PlayerPosition.FIRST);
         assertEquals(Point.FIFTEEN, game.getFirstPlayerPoint());
     }
 
     @Test
     public void shouldBeAfterFifteenComeThirty(){
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(2, PlayerPosition.FIRST);
         assertEquals(Point.THIRTY, game.getFirstPlayerPoint());
     }
     @Test
     public void shouldBeAfterThirtyComeForty(){
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
         assertEquals(Point.FORTY, game.getFirstPlayerPoint());
     }
 
     @Test
     public void shouldBeAfterFortyComeAdvantage(){
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.SECOND);
 
-        game.addPointTo(PlayerPosition.SECOND);
-        game.addPointTo(PlayerPosition.SECOND);
-        game.addPointTo(PlayerPosition.SECOND);
-
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(1, PlayerPosition.FIRST);
         assertEquals(Point.ADVANTAGE, game.getFirstPlayerPoint());
     }
 
     @Test
     public void addThreePointsEachAndOnePointFirstPlayerGameNotIsFinished(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(1, PlayerPosition.FIRST);
         assertFalse(game.isFinished());
     }
 
     @Test
     public void shouldReturnToDeuceWhenOpponentScoresDuringAdvantage(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.SECOND);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(1, PlayerPosition.FIRST);
+        addFewPointToPlayer(1, PlayerPosition.SECOND);
+
         assertEquals(Point.FORTY, game.getFirstPlayerPoint());
         assertEquals(Point.FORTY, game.getSecondPlayerPoint());
     }
 
     @Test
     public void firstPlayerHasAdvantagePlusPointToHimGameIsFinished(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(2, PlayerPosition.FIRST);
         assertTrue(game.isFinished());
     }
 
     @Test
     public void score40To30WinWhenDifferenceTwoPoints(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 2; i++){
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(2, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(1, PlayerPosition.FIRST);
         assertTrue(game.isFinished());
     }
 
     @Test
     public void ifPlayerWinPointAt40To0ThenGameIsFinished(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-        }
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(4, PlayerPosition.FIRST);
         assertTrue(game.isFinished());
     }
 
     @Test
     public void shouldWinWhenAdvantageIsLostAndRegainedAfterDeuce(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.SECOND);
-        game.addPointTo(PlayerPosition.FIRST);
-        game.addPointTo(PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(1, PlayerPosition.FIRST);
+        addFewPointToPlayer(1, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(2, PlayerPosition.FIRST);
         assertTrue(game.isFinished());
     }
 
     @Test
     public void givePointInFinishedGame(){
-        for(int i = 0; i < 4; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-        }
+        addFewPointToPlayer(4, PlayerPosition.SECOND);
         assertThrows(GameIsAlreadyWinException.class, () -> {
             game.addPointTo(PlayerPosition.FIRST);
         });
@@ -133,31 +119,25 @@ public class GameTest {
 
     @Test
     public void givePointSecondPlayerAtScore0To40WinToGame(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.SECOND);
+        addFewPointToPlayer(4, PlayerPosition.SECOND);
         assertTrue(game.isFinished());
     }
 
     @Test
     public void score40To40PlusPointSecondPlayerAdvantageInSecondPlayer(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.SECOND);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(1, PlayerPosition.SECOND);
         assertEquals(Point.ADVANTAGE, game.getSecondPlayerPoint());
     }
 
     @Test
     public void score40To40PlusTwoPointsSecondPlayerAndWinGame(){
-        for(int i = 0; i < 3; i++){
-            game.addPointTo(PlayerPosition.FIRST);
-            game.addPointTo(PlayerPosition.SECOND);
-        }
-        game.addPointTo(PlayerPosition.SECOND);
-        game.addPointTo(PlayerPosition.SECOND);
+        addFewPointToPlayer(3, PlayerPosition.FIRST);
+        addFewPointToPlayer(3, PlayerPosition.SECOND);
+
+        addFewPointToPlayer(2, PlayerPosition.SECOND);
         assertTrue(game.isFinished());
     }
 }

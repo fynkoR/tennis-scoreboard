@@ -9,7 +9,7 @@ public enum Point {
     FORTY ("40"),
     ADVANTAGE ("AD");
 
-    private String title;
+    private final String title;
 
     Point(String title){
         this.title = title;
