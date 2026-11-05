@@ -1,6 +1,5 @@
 package pet.project.models;
 
-import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.MatchIsAlreadyCompletedException;
 import pet.project.exceptions.MatchIsNotCompletedException;
 import pet.project.exceptions.PlayerNotFoundByNameException;

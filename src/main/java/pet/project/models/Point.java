@@ -1,4 +1,4 @@
-package pet.project.enums;
+package pet.project.models;
 
 import pet.project.exceptions.NextPointAfterAdvantageException;
 

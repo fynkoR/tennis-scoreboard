@@ -1,18 +1,16 @@
 package pet.project.exceptions;
-
-import jakarta.persistence.PersistenceException;
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pet.project.dto.ErrorResponse;
-import pet.project.utils.Validator;
 
-@ControllerAdvice
+import java.util.stream.Collectors;
+
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(SameNamePlayersException.class)
@@ -61,10 +59,13 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException exception){
+
         String errorMessage = exception.getBindingResult()
                 .getFieldErrors()
-                .get(0)
-                .getDefaultMessage();
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining("; "));
+
         ErrorResponse errorResponse = new ErrorResponse(errorMessage);
 
         return ResponseEntity
@@ -72,8 +73,8 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
-    @ExceptionHandler(HibernateException.class)
-    public ResponseEntity<ErrorResponse> handleHibernateException(HibernateException exception){
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<ErrorResponse> handleDataAccessException(DataAccessException exception){
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
 
         return ResponseEntity
@@ -81,8 +82,8 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
-    @ExceptionHandler(PersistenceException.class)
-    public ResponseEntity<ErrorResponse> handlePersistenceException(PersistenceException exception){
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handlePersistenceException(Exception exception){
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
 
         return ResponseEntity

@@ -1,7 +1,5 @@
 package pet.project.models;
 
-import pet.project.enums.PlayerPosition;
-import pet.project.enums.Point;
 import pet.project.exceptions.GameIsAlreadyWinException;
 
 import java.util.Optional;

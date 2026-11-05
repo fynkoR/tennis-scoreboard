@@ -2,6 +2,7 @@ package pet.project.enums;
 
 import org.junit.jupiter.api.Test;
 import pet.project.exceptions.NextPointAfterAdvantageException;
+import pet.project.models.Point;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

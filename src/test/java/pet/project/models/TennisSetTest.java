@@ -2,10 +2,7 @@ package pet.project.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.SetIsAlreadyCompletedException;
-
-import java.util.logging.Filter;
 
 import static org.junit.jupiter.api.Assertions.*;
 

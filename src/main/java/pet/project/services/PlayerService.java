@@ -1,15 +1,11 @@
 package pet.project.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.dao.PlayerDao;
-import pet.project.dto.PlayerDto;
 import pet.project.entities.Player;
-import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.PlayerNotFoundByNameException;
-import pet.project.models.*;
 
 import java.util.Optional;
 

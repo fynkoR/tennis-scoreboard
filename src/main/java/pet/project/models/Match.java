@@ -1,13 +1,9 @@
 package pet.project.models;
 
-import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.MatchIsAlreadyCompletedException;
-import pet.project.exceptions.MatchIsNotCompletedException;
-import pet.project.exceptions.NamePlayerNotInMatchException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Match {
     public static final int MIN_SCORE_TO_WIN = 2;

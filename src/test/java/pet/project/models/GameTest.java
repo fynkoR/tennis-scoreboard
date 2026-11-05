@@ -2,8 +2,6 @@ package pet.project.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import pet.project.enums.PlayerPosition;
-import pet.project.enums.Point;
 import pet.project.exceptions.GameIsAlreadyWinException;
 
 import static org.junit.jupiter.api.Assertions.*;

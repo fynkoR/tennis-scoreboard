@@ -1,7 +1,5 @@
 package pet.project.models;
 
-import pet.project.enums.PlayerPosition;
-import pet.project.exceptions.GameIsAlreadyWinException;
 import pet.project.exceptions.TieBreakIsAlreadyWinException;
 
 import java.util.Optional;

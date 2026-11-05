@@ -1,6 +1,6 @@
 package pet.project.exceptions;
 
-import pet.project.enums.Point;
+import pet.project.models.Point;
 
 public class NextPointAfterAdvantageException extends RuntimeException{
     public NextPointAfterAdvantageException(Point point) {

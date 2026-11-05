@@ -1,6 +1,5 @@
 package pet.project.models;
 
-import pet.project.enums.PlayerPosition;
 import pet.project.exceptions.SetIsAlreadyCompletedException;
 
 import java.util.ArrayList;
