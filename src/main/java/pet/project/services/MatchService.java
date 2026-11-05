@@ -52,7 +52,7 @@ public class MatchService {
 
         synchronized (this){
             ActiveMatch currentMatch = matchStorage.findMatchByUUID(uuid);
-            currentMatch.addPointTo(addPointRequest.getName());
+            currentMatch.addPointTo(addPointRequest.name());
 
             firstPlayerDto = playerMapper.entityToDto(currentMatch.getFirstPlayer().name(), currentMatch);
             secondPlayerDto = playerMapper.entityToDto(currentMatch.getSecondPlayer().name(), currentMatch);

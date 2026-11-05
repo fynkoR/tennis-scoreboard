@@ -12,29 +12,29 @@ import java.util.List;
 public class MatchMapper {
 
     public ListFinishedMatchDto mapMatchesToDto(List<Matches> listMatches, int page, long totalRecords, int pageSize){
-        ListFinishedMatchDto listFinishedMatchDto = new ListFinishedMatchDto();
 
         List<FinishedMatchDto> finishedMatchDtoList = getListFinishedMatchDto(listMatches);
 
-        listFinishedMatchDto.setMatches(finishedMatchDtoList);
-        listFinishedMatchDto.setCurrentPage(page);
-
         double totalPagesDouble = (totalRecords * 1.0) / pageSize;
         long totalPages = (long) Math.ceil(totalPagesDouble);
-        listFinishedMatchDto.setTotalPages(totalPages);
 
-        return listFinishedMatchDto;
+        return new ListFinishedMatchDto(
+                finishedMatchDtoList,
+                // т.к. уменьшаю в контроллере на 1 , для показа пользователю
+                page + 1,
+                totalPages
+        );
     }
 
     private List<FinishedMatchDto> getListFinishedMatchDto(List<Matches> listMatches){
         List<FinishedMatchDto> finishedMatchDtoList = new ArrayList<>();
 
         for(Matches matches : listMatches){
-            FinishedMatchDto finishedMatchDto = new FinishedMatchDto();
-
-            finishedMatchDto.setFirstPlayerName(matches.getPlayer1().getName());
-            finishedMatchDto.setSecondPlayerName(matches.getPlayer2().getName());
-            finishedMatchDto.setWinnerName(matches.getWinner().getName());
+            FinishedMatchDto finishedMatchDto = new FinishedMatchDto(
+                    matches.getPlayer1().getName(),
+                    matches.getPlayer2().getName(),
+                    matches.getWinner().getName()
+            );
 
             finishedMatchDtoList.add(finishedMatchDto);
         }

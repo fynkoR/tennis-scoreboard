@@ -11,25 +11,29 @@ import pet.project.models.TennisPlayer;
 public class PlayerMapper {
 
     public PlayerDto entityToDto(String name, ActiveMatch activeMatch){
-        PlayerDto playerDto = new PlayerDto();
-        playerDto.setName(name);
-
         PlayerPosition playerPosition = activeMatch.getPlayerPositionInMatch(name);
         boolean isFirstPlayer = playerPosition == PlayerPosition.FIRST;
 
+        Integer pointsTieBreak = null;
+        String pointsGame = null;
+
         if(activeMatch.isTieBreak()){
-            Integer points = Integer.valueOf(isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer());
-            playerDto.setTieBreakPoints(points);
+            pointsTieBreak = Integer.valueOf(isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer());
         }
         else{
-            String points = isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer();
-            playerDto.setPoints(points);
+            pointsGame = isFirstPlayer ? activeMatch.getGameScore().scoreFirstPlayer() : activeMatch.getGameScore().scoreSecondPlayer();
         }
 
-        playerDto.setGames(isFirstPlayer ? activeMatch.getSetScore().scoreFirstPlayer() : activeMatch.getSetScore().scoreSecondPlayer());
-        playerDto.setSets(isFirstPlayer ? activeMatch.getMatchScore().scoreFirstPlayer() : activeMatch.getMatchScore().scoreSecondPlayer());
+        int games = isFirstPlayer ? activeMatch.getSetScore().scoreFirstPlayer() : activeMatch.getSetScore().scoreSecondPlayer();
+        int sets = isFirstPlayer ? activeMatch.getMatchScore().scoreFirstPlayer() : activeMatch.getMatchScore().scoreSecondPlayer();
 
-        return playerDto;
+        return new PlayerDto(
+                name,
+                pointsGame,
+                games,
+                sets,
+                pointsTieBreak
+        );
     }
 
     public TennisPlayer playerToTennisPlayer(Player player){

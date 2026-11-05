@@ -51,7 +51,6 @@ public class MatchController {
     public ResponseEntity<ListFinishedMatchDto> getFinishedMatches(@RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
                                                                    @RequestParam(name = "player_name", required = false) String playerName){
         ListFinishedMatchDto listFinishedMatchDto = finishedMatchService.getFinishedMatches(page - 1, playerName, DEFAULT_PAGE_SIZE);
-        listFinishedMatchDto.setCurrentPage(page);
         return ResponseEntity.ok(listFinishedMatchDto);
     }
 
