@@ -12,7 +12,7 @@ import pet.project.services.MatchService;
 
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequestMapping("/matches")
 public class MatchController {
     private static final int DEFAULT_PAGE_SIZE = 2;
@@ -31,12 +31,11 @@ public class MatchController {
         UUID uuid = matchService.createMatch(createMatchRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .header("Location", "/matches/" + uuid)
                 .body(new CreateMatchResponse(uuid));
     }
 
     @PostMapping("/{uuid}/point")
-    public ResponseEntity<MatchDto> addPoint(@RequestBody AddPointRequest addPointRequest, @PathVariable("uuid") UUID uuid){
+    public ResponseEntity<MatchDto> addPoint(@Valid @RequestBody AddPointRequest addPointRequest, @PathVariable("uuid") UUID uuid){
         MatchDto matchDto = matchService.addPoint(uuid, addPointRequest);
         return ResponseEntity.ok(matchDto);
     }
