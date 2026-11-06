@@ -15,11 +15,6 @@ public class GameTest {
         game = new Game();
     }
 
-    @Test
-    public void booleanIsFinishedIfGameJustCreated(){
-        assertFalse(game.isFinished());
-    }
-
     private void addFewPointToPlayer(int count, PlayerPosition playerPosition){
         for(int i = 0; i < count; i++){
             game.addPointTo(playerPosition);
@@ -29,6 +24,11 @@ public class GameTest {
     private void makeGameWhenPointsAt40To40(){
         addFewPointToPlayer(3, PlayerPosition.FIRST);
         addFewPointToPlayer(3, PlayerPosition.SECOND);
+    }
+
+    @Test
+    public void booleanIsFinishedIfGameJustCreated(){
+        assertFalse(game.isFinished());
     }
 
     @Test

@@ -14,6 +14,26 @@ public class TennisSetTest {
         tennisSet = new TennisSet();
     }
 
+    private void winFewGamesForPlayer(int count, PlayerPosition playerPosition){
+        for(int i = 0; i < 4 * count; i++){
+            tennisSet.addPointTo(playerPosition);
+        }
+    }
+
+    private void makeTieBreak(){
+        winFewGamesForPlayer(5, PlayerPosition.FIRST);
+        winFewGamesForPlayer(5, PlayerPosition.SECOND);
+
+        winFewGamesForPlayer(1, PlayerPosition.FIRST);
+        winFewGamesForPlayer(1, PlayerPosition.SECOND);
+    }
+
+    private void winTieBreakForPlayer(PlayerPosition playerPosition){
+        for(int i = 0; i < 7; i++){
+            tennisSet.addPointTo(playerPosition);
+        }
+    }
+
     @Test
     public void booleanIsFinishedIfSetJustCreated(){
         assertFalse(tennisSet.isFinished());
@@ -28,186 +48,101 @@ public class TennisSetTest {
 
     @Test
     public void firstPlayerWinGameCounterIncreased(){
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winFewGamesForPlayer(1, PlayerPosition.FIRST);
         assertEquals(1, tennisSet.getScorePlayer(PlayerPosition.FIRST));
     }
 
     @Test
     public void secondPlayerWinGameCounterIncreased(){
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        winFewGamesForPlayer(1, PlayerPosition.SECOND);
         assertEquals(1, tennisSet.getScorePlayer(PlayerPosition.SECOND));
     }
 
     @Test
     public void winByScore6To0(){
-        for(int i = 0; i < 4*6; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winFewGamesForPlayer(6, PlayerPosition.FIRST);
         assertTrue(tennisSet.isFinished());
     }
 
     @Test
     public void winByDifferenceOf2Point(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        winFewGamesForPlayer(5, PlayerPosition.FIRST);
+        winFewGamesForPlayer(4, PlayerPosition.SECOND);
 
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winFewGamesForPlayer(1, PlayerPosition.FIRST);
         assertTrue(tennisSet.isFinished());
     }
     @Test
     public void noWinByDifferenceOf1Point(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        winFewGamesForPlayer(5, PlayerPosition.FIRST);
+        winFewGamesForPlayer(5, PlayerPosition.SECOND);
 
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winFewGamesForPlayer(1, PlayerPosition.FIRST);
         assertFalse(tennisSet.isFinished());
     }
     @Test
     public void gameContinueWhenSetScore5To5(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        winFewGamesForPlayer(5, PlayerPosition.FIRST);
+        winFewGamesForPlayer(5, PlayerPosition.SECOND);
         assertFalse(tennisSet.isFinished());
     }
     @Test
     public void tieBreakWhenScore6To6(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        makeTieBreak();
 
         assertTrue(tennisSet.isTieBreak());
     }
 
     @Test
     public void scoreDoesNotIncreaseWhenTieBreak(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        makeTieBreak();
+
         tennisSet.addPointTo(PlayerPosition.FIRST);
+
         assertEquals(6, tennisSet.getScorePlayer(PlayerPosition.FIRST));
         assertEquals(6, tennisSet.getScorePlayer(PlayerPosition.SECOND));
 
     }
     @Test
     public void setCompletedAfterTieBreak(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        makeTieBreak();
 
-        for(int i = 0; i < 7; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winTieBreakForPlayer(PlayerPosition.FIRST);
+
         assertTrue(tennisSet.isFinished());
     }
 
     @Test
     public void scorePlayers7To6AfterTieBreak(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        makeTieBreak();
 
-        for(int i = 0; i < 7; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winTieBreakForPlayer(PlayerPosition.FIRST);
+
         assertEquals(7, tennisSet.getScorePlayer(PlayerPosition.FIRST));
         assertEquals(6, tennisSet.getScorePlayer(PlayerPosition.SECOND));
     }
 
     @Test
     public void givePointInFinishedSet(){
-        for(int i = 0; i < 4*6; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winFewGamesForPlayer(6, PlayerPosition.FIRST);
         assertThrows(SetIsAlreadyCompletedException.class, () -> tennisSet.addPointTo(PlayerPosition.FIRST));
     }
 
     @Test
     public void afterTieBreakLastGameIsTieBreak(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
+        makeTieBreak();
 
-        for(int i = 0; i < 7; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winTieBreakForPlayer(PlayerPosition.FIRST);
+
         assertInstanceOf(TieBreak.class, tennisSet.getLastGameInList());
     }
 
     @Test
     public void addPointAtAScoreOf6To4(){
-        for(int i = 0; i < 4*5; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*4; i++){
-            tennisSet.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4; i++){
-            tennisSet.addPointTo(PlayerPosition.FIRST);
-        }
+        winFewGamesForPlayer(5, PlayerPosition.FIRST);
+        winFewGamesForPlayer(4, PlayerPosition.SECOND);
+
+        winFewGamesForPlayer(1, PlayerPosition.FIRST);
         assertThrows(SetIsAlreadyCompletedException.class, () -> tennisSet.addPointTo(PlayerPosition.FIRST));
     }
 }
