@@ -15,8 +15,10 @@ public class MatchTest {
         match = new Match();
     }
 
-    private void winTennisSetForPlayer(){
-
+    private void winTennisSetForPlayer(int count, PlayerPosition playerPosition){
+        for(int i = 0; i < 4*6 * count; i++){
+            match.addPointTo(playerPosition);
+        }
     }
 
     @Test
@@ -35,54 +37,37 @@ public class MatchTest {
     }
     @Test
     public void setCompletedCounterIncreased(){
-        for(int i = 0; i < 4*6; i++){
-            match.addPointTo(PlayerPosition.FIRST);
-        }
+        winTennisSetForPlayer(1, PlayerPosition.FIRST);
         assertEquals(1, match.getScorePlayer(PlayerPosition.FIRST));
     }
 
     @Test
     public void score2To0MatchIsCompleted(){
-        for(int i = 0; i < 4*6*2; i++){
-            match.addPointTo(PlayerPosition.FIRST);
-        }
+        winTennisSetForPlayer(2, PlayerPosition.FIRST);
         assertTrue(match.isFinished());
     }
     @Test
     public void score2To1MatchIsCompleted(){
-        for(int i = 0; i < 4*6; i++){
-            match.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*6; i++){
-            match.addPointTo(PlayerPosition.SECOND);
-        }
-        for(int i = 0; i < 4*6; i++){
-            match.addPointTo(PlayerPosition.FIRST);
-        }
+        winTennisSetForPlayer(1, PlayerPosition.FIRST);
+        winTennisSetForPlayer(1, PlayerPosition.SECOND);
+        winTennisSetForPlayer(1, PlayerPosition.FIRST);
+
         assertTrue(match.isFinished());
     }
     @Test
     public void notShouldMatchIsCompletedWhenScore1To1(){
-        for(int i = 0; i < 4*6; i++){
-            match.addPointTo(PlayerPosition.FIRST);
-        }
-        for(int i = 0; i < 4*6; i++){
-            match.addPointTo(PlayerPosition.SECOND);
-        }
+        winTennisSetForPlayer(1, PlayerPosition.FIRST);
+        winTennisSetForPlayer(1, PlayerPosition.SECOND);
         assertFalse(match.isFinished());
     }
     @Test
     public void notShouldMatchIsCompletedWhenScore1To0(){
-        for(int i = 0; i < 4*6; i++){
-            match.addPointTo(PlayerPosition.FIRST);
-        }
+        winTennisSetForPlayer(1, PlayerPosition.FIRST);
         assertFalse(match.isFinished());
     }
     @Test
     public void tryAddPointWhenMatchIsCompleted(){
-        for(int i = 0; i < 4*6*2; i++){
-            match.addPointTo(PlayerPosition.FIRST);
-        }
+        winTennisSetForPlayer(2, PlayerPosition.FIRST);
         assertThrows(MatchIsAlreadyCompletedException.class, () -> match.addPointTo(PlayerPosition.FIRST));
     }
 }
